@@ -1,0 +1,220 @@
+import routeUtils from '../utils/routerOptions'
+import express from 'express'
+import cloudinaryCon from '../plugins/cloudinaryCon'
+import winstonLogger from '../utils/winstonLogger'
+import jsStringCompression from 'js-string-compression'
+import publicEnums from '../../app/publicEnums'
+import RedisCache from '../utils/redisAuthCache'
+
+import userService from '../../domains/services/userService'
+
+
+
+/**
+ * base64 image strings are compress b4 sent to server
+ * so we decompress them first 
+ * 
+ */
+const hm = new jsStringCompression.Hauffman()
+
+
+
+/**
+     * 
+     *  Authentication call routes
+     *  
+     */
+
+
+  // free access endpoints for authentication
+  const openAccessRouterService = express.Router([routeUtils.routerOptions])
+  openAccessRouterService.use(routeUtils.csrfMiddleware)
+
+  // OpenAccess_routes : don't require accessToken
+  openAccessRouterService.route('/VentingCorner/userSignUp').post(routeUtils.asyncMiddleware(async (req,res,next) => {
+  //openAccessRouterService.get('/VC/userSignUp',routeUtils.asyncMiddleware(async (req,res,next) => {
+  
+    winstonLogger.info('user-SIGNUP')
+
+    winstonLogger.info('REQUEST BODY')
+    winstonLogger.info(JSON.stringify(req.body,null,4))
+
+    if(
+       req.body &&
+       req.body.Name && 
+       req.body.Email &&
+       req.body.Password &&
+       req.body.BirthDate && 
+       req.body.Address && 
+       req.body.ProfileImage && 
+       req.body.Topics
+       ){
+      const profiler = winstonLogger.startTimer()
+
+      try{
+          
+        // create user
+        const payloadS =  await userService.createNewEmailUser(
+            req.body.Name,
+            req.body.Email,
+            req.body.Password,
+            req.body.BirthDate,
+            req.body.Address,
+            'Temp',// req.body.ProfileImage,// Gets updated on Logo upload to cloudinary
+            req.body.Topics
+        )
+      
+        if(payloadS){
+            
+          // done with SIGNUP
+          // authenticate user -> creates token
+          const payloadA = await userService.authenticateUser({
+              detail: payloadS.email,
+              password: payloadS.password
+          }).
+          catch((err) => {
+      
+              winstonLogger.error('ERROR: authentication')
+              winstonLogger.error(err.stack)
+      
+          })
+      
+          winstonLogger.info("SIGNUP PAYLOAD")
+          winstonLogger.info(JSON.stringify(payloadA))
+
+          payloadS.state = 'failure'
+          // Persist images if user was created 
+          if(payloadS.Token !== null ){
+
+              winstonLogger.info('SAVE LOGO TO CLOUDINARY')
+              // if it worked save the image to cloudinary with userName / profile # hm.decompress(req.body.Logo)
+              const result = await cloudinaryCon.uploadUserProfileImage(req.body.ProfileImage, req.body.Name, req.body.Email).
+              catch((e) => {
+
+                  winstonLogger.error('Error uploading Logo')
+                  winstonLogger.error(e.stack)
+
+              })
+
+              winstonLogger.info('COUDLINARY RESULTS')
+              winstonLogger.info(result)
+              winstonLogger.info('END')
+              payloadS.state = 'success'  
+
+          }
+
+          // Send the payload to client
+          res.json(payloadS)
+
+      }
+      else{
+
+          winstonLogger.info('INFO: user not created')
+            res.json({
+              state: 'failure',
+              statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+              Token: null
+        })
+
+      }
+    } catch(e){
+
+      winstonLogger.error('ERROR: signup failed')
+      winstonLogger.error(e.stack)
+      res.json({
+        state: 'failure',
+        statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+        Token: null
+      })
+
+    }
+            
+      profiler.done({ message: 'End of user_signup'})
+      
+      next()
+
+  }else{
+
+    res.json({
+      state: 'failure',
+      statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
+      statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
+      Token: null
+    })
+
+  }
+
+}))
+  
+openAccessRouterService.route('/VC/userLogin').get(routeUtils.asyncMiddleware(async (req,res,next) => {
+
+    winstonLogger.info('user-LOGIN')
+
+    winstonLogger.info('REQUEST BODY')
+    winstonLogger.info(JSON.stringify(req.body,null,4))
+    if(
+      req.body.detail &&
+      req.body.password
+      ){
+      
+        try {
+
+            // *test cache
+            // RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
+            //
+            // winstonLogger.info('CHECK: redisCache')
+            // RedisCache.Whitelist.remove(req.body.detail)
+            // winstonLogger.info(JSON.stringify(RedisCache.Whitelist.verify(req.body.detail),null,4))
+
+            //if(!RedisCache.Whitelist.verify(req.body.detail)){
+          
+              const payload = await authenticationController.authenticateuserAdmin(
+                req.body.detail,
+                req.body.password
+              )
+              winstonLogger.info("PAYLOAD")
+              winstonLogger.info(JSON.stringify(payload))
+              payload.state = 'failure'
+              if(payload){
+                payload.state = 'success'
+                RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
+              }
+              res.json(payload)
+
+            // }else{
+            //   winstonLogger.info(req.body.detail+ " Already Logged In")
+            //   res.json({message: "INFO: User Already Logged In"})
+            // }
+
+          } catch (e) {
+
+          winstonLogger.error('ERROR: authentication')
+          winstonLogger.error(e.stack)
+
+          res.json({
+            state: 'failure',
+            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+            Token: null
+          })
+
+        }
+
+        next()
+    
+      }else{
+
+        res.json({
+          state: 'failure',
+          statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
+          Token: null
+        })
+        
+      }
+
+
+}))
+
+  module.exports = openAccessRouterService

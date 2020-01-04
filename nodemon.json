@@ -1,0 +1,22 @@
+{
+    "restartable": "rs",
+    "delay": "1000",
+    "ignore": [
+      ".git",
+      "node_modules",
+      "error.log",
+      "combined.log"
+    ],
+    "verbose": true,
+    "execMap": {
+      "js": "node "
+    },
+    "events": {},
+    "watch": [
+      "./"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "ext": "js,json"
+  }
