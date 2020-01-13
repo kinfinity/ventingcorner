@@ -1,14 +1,29 @@
+const VC_STATES = {
+    REQUEST_OK: "smooth sailing",
+    REQUEST_ERROR: "",
+    AUTHENTICATION_ERROR: "authentication_error",
+    INVALID_REQUEST_ERROR: "invalid_request_error",
+    INTERNAL_SERVER_ERROR: "internal_server_error",
+    CSRF_ERROR: "csrf_error",
+    HASHING_ERROR: "hashing_error",
+    EMPTY_TOKEN: "empty_token",
+    INVALID_TOKEN: "invalid_token",
+    UNAUTHORISED:"unauthorised_access",
+    INVALID_RESOURCE: "invalid_resource",
+    RESOURCE_EXISTS: "resource already exists"
+}
+
+
 const VC_STATUS_CODES = {
     REQUEST_OK: 200,
-    REQUEST_ERROR: 101,
-    SIGNUP_ERROR_USEREXISTS: 1011,
-    LOGIN_ERROR: 1111,
-    REQUEST_ERROR_FAILEDTOCREATE: 1012,
-    REQUEST_ERROR_SCHOOLCODEMISMATCH: 1013,
-    REQUEST_PARAM_ERROR: 102,
-    NO_TOKEN: 1000,
-    INCORRECT_TOKEN: 2222,
-    INTERNAL_SERVER_ERROR: 103
+    REQUEST_ERROR: 400,
+    UNAUTHORISED: 401,
+    REQUEST_FAILED: 402,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    CONFLICT: 409,
+    TOO_MANY_REQUESTS: 429,
+    INTERNAL_SERVER_ERROR: 500
 }
 
 const VC_STATUS_MESSAGES = {
@@ -33,6 +48,7 @@ const VC_STATUS_MESSAGES = {
 }
 
 export default {
+    VC_STATES,
     VC_STATUS_CODES,
     VC_STATUS_MESSAGES
 }

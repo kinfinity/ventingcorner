@@ -28,10 +28,10 @@ const hm = new jsStringCompression.Hauffman()
 
   // free access endpoints for authentication
   const openAccessRouterService = express.Router([routeUtils.routerOptions])
-  openAccessRouterService.use(routeUtils.csrfMiddleware)
+  //openAccessRouterService.use(routeUtils.csrfMiddleware)
 
   // OpenAccess_routes : don't require accessToken
-  openAccessRouterService.route('/VentingCorner/userSignUp').post(routeUtils.asyncMiddleware(async (req,res,next) => {
+  openAccessRouterService.route('/signup').post(routeUtils.asyncMiddleware(async (req,res,next) => {
   //openAccessRouterService.get('/VC/userSignUp',routeUtils.asyncMiddleware(async (req,res,next) => {
   
     winstonLogger.info('user-SIGNUP')
@@ -40,6 +40,7 @@ const hm = new jsStringCompression.Hauffman()
     winstonLogger.info(JSON.stringify(req.body,null,4))
 
     if(
+      
        req.body &&
        req.body.Name && 
        req.body.Email &&
@@ -76,6 +77,14 @@ const hm = new jsStringCompression.Hauffman()
       
               winstonLogger.error('ERROR: authentication')
               winstonLogger.error(err.stack)
+
+              res.json({
+                request_url: '/signup',
+                state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
+                statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
+                statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+                token: null
+              })
       
           })
       
@@ -84,7 +93,7 @@ const hm = new jsStringCompression.Hauffman()
 
           payloadS.state = 'failure'
           // Persist images if user was created 
-          if(payloadS.Token !== null ){
+          if(payloadS.token !== null ){
 
               winstonLogger.info('SAVE LOGO TO CLOUDINARY')
               // if it worked save the image to cloudinary with userName / profile # hm.decompress(req.body.Logo)
@@ -99,7 +108,8 @@ const hm = new jsStringCompression.Hauffman()
               winstonLogger.info('COUDLINARY RESULTS')
               winstonLogger.info(result)
               winstonLogger.info('END')
-              payloadS.state = 'success'  
+              payloadS.state = publicEnums.VC_STATES.REQUEST_OK
+              payloadS.request_url = '/signup'
 
           }
 
@@ -111,9 +121,10 @@ const hm = new jsStringCompression.Hauffman()
 
           winstonLogger.info('INFO: user not created')
             res.json({
-              state: 'failure',
-              statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-              Token: null
+              request_url: '/signup',
+              state: publicEnums.VC_STATES.INVALID_RESOURCE,
+              statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
+              token: null
         })
 
       }
@@ -122,10 +133,11 @@ const hm = new jsStringCompression.Hauffman()
       winstonLogger.error('ERROR: signup failed')
       winstonLogger.error(e.stack)
       res.json({
-        state: 'failure',
+        request_url: '/signup',
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
-        Token: null
+        token: null
       })
 
     }
@@ -137,17 +149,18 @@ const hm = new jsStringCompression.Hauffman()
   }else{
 
     res.json({
-      state: 'failure',
+      request_url: '/signup',
+      state: publicEnums.VC_STATES.REQUEST_ERROR,
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
-      Token: null
+      token: null
     })
 
   }
 
 }))
   
-openAccessRouterService.route('/VC/userLogin').get(routeUtils.asyncMiddleware(async (req,res,next) => {
+openAccessRouterService.route('/user/login').get(routeUtils.asyncMiddleware(async (req,res,next) => {
 
     winstonLogger.info('user-LOGIN')
 
@@ -161,11 +174,11 @@ openAccessRouterService.route('/VC/userLogin').get(routeUtils.asyncMiddleware(as
         try {
 
             // *test cache
-            // RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
+            RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
             //
-            // winstonLogger.info('CHECK: redisCache')
+            winstonLogger.info('CHECK: redisCache')
             // RedisCache.Whitelist.remove(req.body.detail)
-            // winstonLogger.info(JSON.stringify(RedisCache.Whitelist.verify(req.body.detail),null,4))
+            winstonLogger.info(JSON.stringify(RedisCache.Whitelist.verify(req.body.detail),null,4))
 
             //if(!RedisCache.Whitelist.verify(req.body.detail)){
           
@@ -193,10 +206,11 @@ openAccessRouterService.route('/VC/userLogin').get(routeUtils.asyncMiddleware(as
           winstonLogger.error(e.stack)
 
           res.json({
+            request_url: '/user/login',
             state: 'failure',
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
-            Token: null
+            token: null
           })
 
         }
@@ -206,10 +220,11 @@ openAccessRouterService.route('/VC/userLogin').get(routeUtils.asyncMiddleware(as
       }else{
 
         res.json({
+          request_url: '/user/login',
           state: 'failure',
           statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
-          Token: null
+          token: null
         })
         
       }

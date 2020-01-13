@@ -16,10 +16,10 @@ import rantService from '../../domains/services/rantService'
   const rantRouter = express.Router([routeUtils.routerOptions])
 
   //  
-  rantRouter.use('/VC/rant',routeUtils.asyncMiddleware(routeUtils.authrant))
+  // rantRouter.use('/rant',routeUtils.asyncMiddleware(routeUtils.authrant))
   
   // create Text rant
-  rantRouter.route('/VC/rant')
+  rantRouter.route('/rant/create')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('rant-PROFILE')
@@ -58,7 +58,7 @@ import rantService from '../../domains/services/rantService'
   }))
 
     // create Image rant
-    rantRouter.route('/VC/rant')
+    rantRouter.route('/rant/createImage')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('rant')
@@ -120,7 +120,7 @@ import rantService from '../../domains/services/rantService'
   }))
 
   // delete rant  ?
-  rantRouter.route('/VC/rant')
+  rantRouter.route('/rant/delete')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('rant-PROFILE')
@@ -159,7 +159,7 @@ import rantService from '../../domains/services/rantService'
   }))
 
     // get rant
-    rantRouter.route('/VC/rant')
+    rantRouter.route('/rant')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('rant-PROFILE')
@@ -198,7 +198,7 @@ import rantService from '../../domains/services/rantService'
     }))
 
     // update rant description
-    rantRouter.route('/VC/rant')
+    rantRouter.route('/rant/update')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('rant-PROFILE')

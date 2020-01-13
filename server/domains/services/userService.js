@@ -73,10 +73,10 @@ const userService = {
       winstonLogger.error(e)
 
       Promise.resolve({
-        state: 'failure',
+        status: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
-        Token: null
+        token: null
       })
 
     })
@@ -86,17 +86,17 @@ const userService = {
       if(response.type == "email"){
         // Return to higher scope if there's a user
         return Promise.resolve({
-          state: 'failure',
-          statusCode: publicEnums.VC_STATUS_CODES.SIGNUP_ERROR_USEREXISTS,
+          state: publicEnums.VC_STATES.RESOURCE_EXISTS,
+          statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.SIGNUP_ERROR_EMAILEXISTS,
-          Token: null
+          token: null
         })
       }else if(response.type == "user"){
         return Promise.resolve({
-          state: 'failure',
-          statusCode: publicEnums.VC_STATUS_CODES.SIGNUP_ERROR_USEREXISTS,
+          state: publicEnums.VC_STATES.RESOURCE_EXISTS,
+          statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.SIGNUP_ERROR_USEREXISTS,
-          Token: null
+          token: null
         })
       }
 
@@ -143,10 +143,10 @@ const userService = {
         winstonLogger.error(err)
 
         return Promise.resolve({
-          state: 'failure',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR,
-          Token: null
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+          token: null
         })
 
       })
@@ -157,10 +157,10 @@ const userService = {
       winstonLogger.error(err)  
 
       response = Promise.resolve({
-        state: 'failure',
-        statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        state: publicEnums.VC_STATES.HASHING_ERROR,
+        statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR,
-        Token: null
+        token: null
       })
 
       return response
@@ -208,10 +208,10 @@ const userService = {
       response1 = false
 
       return Promise.resolve({
-        state: 'failure',
+        state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
-        Token: null
+        token: null
       })
 
     })
@@ -242,10 +242,10 @@ const userService = {
       response2 = false
       
       return Promise.resolve({
-        state: 'failure',
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
-        Token: null
+        token: null
       })
 
     })
@@ -259,7 +259,7 @@ const userService = {
         state: 'failure',
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_USERNAME,
-        Token: null
+        token: null
       })
 
     }
@@ -279,10 +279,10 @@ const userService = {
     if (!res) {
 
       response = {
-        state: 'failure',
-        statusCode: publicEnums.VC_STATUS_CODES.LOGIN_ERROR,
+        state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
+        statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PASSWORD,
-        Token: null
+        token: null
       }
 
       return response
@@ -294,7 +294,7 @@ const userService = {
     await Promise.resolve(tokenService.generateToken({
           email: tempData.email,
           userName: tempData.Name,
-          userID: tempData.userID
+          userID: tempData._id
     })).
     then((tk) => {
 
@@ -308,6 +308,13 @@ const userService = {
       winstonLogger.error('error generating token')
       winstonLogger.error(e)
 
+      return Promise.resolve({
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+        statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+        token: null
+      })
+
     })
 
     winstonLogger.info('TOKEN')
@@ -315,10 +322,10 @@ const userService = {
 
     // Resolve
     response = Promise.resolve({
-      state: 'Success',
+      state: publicEnums.VC_STATES.REQUEST_OK,
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.SUCCESSFUL_LOGIN,
-      Token: Token
+      token: Token
     })
 
     return response
