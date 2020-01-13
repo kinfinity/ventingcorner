@@ -47,8 +47,7 @@ const hm = new jsStringCompression.Hauffman()
        req.body.Password &&
        req.body.BirthDate && 
        req.body.Address && 
-       req.body.ProfileImage && 
-       req.body.Topics
+       req.body.ProfileImage 
        ){
       const profiler = winstonLogger.startTimer()
 
