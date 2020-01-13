@@ -114,14 +114,14 @@ const wrapper = {
 }
 
 // CSRFTOKEN GENERATION ENDPOINT
-app.get("/VC/csrfTOKENS", routeUtils.csrfMiddleware,function(req, res) {
+app.get("/csrfTOKENS", routeUtils.csrfMiddleware,function(req, res) {
     //    send the token to client
       let _token = req.csrfToken()
       winstonLogger.info(`GENERATED_CSRF: ${_token}`)
       res.json({ csrfToken: _token})
 })
 
-app.get("/VC/viewHEADERS",function(req, res) {// For Debugging
+app.get("/viewHEADERS",function(req, res) {// For Debugging
       winstonLogger.info("REQUEST_HEADERS:" +req.headers)
       res.json({ csrfToken: req.headers})
 })
