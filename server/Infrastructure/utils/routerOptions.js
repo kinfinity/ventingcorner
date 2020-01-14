@@ -7,6 +7,7 @@
 import csurf from 'csurf'
 import winstonLogger from './winstonLogger'
 import publicEnums from '../../app/publicEnums'
+import authorisationService from '../../domains/services/authorisationService'
 
 const asyncMiddleware = fn =>
   (req, res, next) => {
@@ -14,6 +15,7 @@ const asyncMiddleware = fn =>
      .resolve(fn(req, res, next))
       .catch(next)
 }
+
 
 // Options
 const routerOptions = {}
@@ -38,7 +40,7 @@ const authUser = async (req, res, next) => {
     req.baseUrl // scope must match base url filtered and lowerCase e.g /user -> user
     
     //authorise token gotten
-    const resx = await auth.authoriseUser(bearerToken)
+    const resx = await authorisationService.authoriseToken(bearerToken)
     if(resx){
       winstonLogger.info('RES:')
       winstonLogger.info(JSON.stringify(resx,null,4))
