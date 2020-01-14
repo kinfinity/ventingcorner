@@ -114,7 +114,7 @@ const userService = {
       }
     
       // temp password holder  
-    const ipassword = userData.password
+    const ipassword = userData.Password
 
     // Hash user password on first save
     await hPassword.hash(ipassword).
