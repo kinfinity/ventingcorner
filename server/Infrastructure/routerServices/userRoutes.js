@@ -26,10 +26,10 @@ import userService from '../../domains/services/userService'
   const userRouter = express.Router([routeUtils.routerOptions])
 
   //  Protect all the User routes
-  userRouter.use('/VentingCorner/user',routeUtils.asyncMiddleware(routeUtils.authUser))
+  userRouter.use('/user',routeUtils.asyncMiddleware(routeUtils.authUser))
   
   //  ~! LogOut
-  userRouter.route('/VentingCorner/user/logout')
+  userRouter.route('/user/logout')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-LOGOUT')
@@ -62,7 +62,7 @@ import userService from '../../domains/services/userService'
   }))
 
   // Get user Info
-  userRouter.route('/VentingCorner/user')
+  userRouter.route('/user')
   .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('user-PROFILE')
@@ -72,16 +72,11 @@ import userService from '../../domains/services/userService'
       try {
           // 
           const payload = await userService.getProfile(
-            req.body.UserName,
             req.body.UserID
           )
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
-          }
           res.json(payload)
 
       } catch (e) {
@@ -90,8 +85,9 @@ import userService from '../../domains/services/userService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            state: publicEnums.VC_STATES.REQUEST_ERROR,
+            statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             Data: null
         })
 
@@ -102,7 +98,7 @@ import userService from '../../domains/services/userService'
   }))
   
   // Update user Info
-  userRouter.route('/VentingCorner/user/update')
+  userRouter.route('/user/update')
   .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('user-CONTACTINFO')
@@ -143,7 +139,7 @@ import userService from '../../domains/services/userService'
   }))
   
   // notification API routes
-  userRouter.route('/VentingCorner/user/notifications')
+  userRouter.route('/user/notifications')
   .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('user-NOTIFICATIONS')
@@ -185,7 +181,7 @@ import userService from '../../domains/services/userService'
   }))
 
   // get posts
-  userRouter.route('/VentingCorner/user/posts')
+  userRouter.route('/user/posts')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-ACTIVITIES')
@@ -224,7 +220,7 @@ import userService from '../../domains/services/userService'
 
 
   // follow user
-  userRouter.route('/VentingCorner/user/follow')
+  userRouter.route('/user/follow')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-ACTIVITIES')
@@ -262,7 +258,7 @@ import userService from '../../domains/services/userService'
 
   }))
   // unfollow user
-  userRouter.route('/VentingCorner/user/unfollow')
+  userRouter.route('/user/unfollow')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-ACTIVITIES')
@@ -301,7 +297,7 @@ import userService from '../../domains/services/userService'
   }))
 
   // get followers
-  userRouter.route('/VentingCorner/user/followers')
+  userRouter.route('/user/followers')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-FOLOWERS')
@@ -338,7 +334,7 @@ import userService from '../../domains/services/userService'
 
   }))
   // get following
-  userRouter.route('/VentingCorner/user/following')
+  userRouter.route('/user/following')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-FOLOWERS')
@@ -376,7 +372,7 @@ import userService from '../../domains/services/userService'
   }))
   
   // view User Profile -> Use ID
-  userRouter.route('/VentingCorner/user/viewprofile')
+  userRouter.route('/user/viewprofile')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
     winstonLogger.info('user-FOLOWERS')

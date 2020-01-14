@@ -490,7 +490,7 @@ const userService = {
   /*
    * get Profile Info
    */
-  async getProfile(Name,Email) {
+  async getProfile(UserID) {
 
     //
     let response = null
@@ -498,15 +498,19 @@ const userService = {
     await userService.
     _userModel.
     findOne({
-          Name,
-          Email
+      _id: UserID
     })
     .then((userData) => {
 
       winstonLogger.info('userData : ')
       winstonLogger.info(userData)
-      
-      response
+      response = {
+        UserName: userData.userName,
+        Name: userData.name,
+        Email: userData.email,
+        Address: userData.address,
+        ProfileImage: userData.profileImage
+      }
 
     })
     .catch((err) => {
@@ -515,7 +519,7 @@ const userService = {
         winstonLogger.error(err.message)
 
       return Promise.response({
-        state: 'failure',
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
         Data: null
@@ -524,7 +528,7 @@ const userService = {
     })
 
     return Promise.response({
-      state: 'success',
+      state: publicEnums.VC_STATES.REQUEST_OK,
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
       Data: response

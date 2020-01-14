@@ -29,6 +29,7 @@
     "json-web-token": "^3.2.0",
     "mongoose": "^5.8.3",
     "mongoose-type-url": "^1.0.6",
+    "mongoose-unique-validator": "^2.0.3",
     "nexmo": "^2.5.2",
     "nodemailer": "^6.4.2",
     "nodemon": "^2.0.2",
