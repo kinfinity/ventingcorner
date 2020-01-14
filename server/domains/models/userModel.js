@@ -9,6 +9,8 @@
 import mongoose from '../../Infrastructure/plugins/mongooseCon'
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 require('mongoose-type-url')
+require('mongoose-type-email')
+import uniqueValidator from 'mongoose-unique-validator'
 
 const TSchema = mongoose.Schema
 /**
@@ -36,7 +38,7 @@ const userSchema = new TSchema({
       unique: true
     },
     email: {
-        type: String,
+        type: TSchema.Types.Email,
         required: true,
         unique: true
     },
@@ -50,7 +52,7 @@ const userSchema = new TSchema({
       max: 13,
       min: 11
     },
-     profileImage: {
+     profileImage: {//mongoose.SchemaTypes.Url
        type: TSchema.Types.Url,
        required:false,
 
@@ -111,6 +113,9 @@ const userSchema = new TSchema({
     }
 
 )
+
+//
+userSchema.plugin(uniqueValidator)
 
 // Preparatory steps before save to model(pre-save)
 userSchema.pre('save', function(next) {

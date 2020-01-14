@@ -7,7 +7,6 @@
  */
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 import mongoose from '../../Infrastructure/plugins/mongooseCon'
-require('mongoose-type-url')
 
 const TSchema = mongoose.Schema
 
