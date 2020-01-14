@@ -223,16 +223,16 @@ const userService = {
 
     // Try Name
     await userService._userModel.
-    findOne({userID: userData.detail}).
+    findOne({userName: userData.detail}).
     then((Data) => {
       
       winstonLogger.info('Searching for username')
       // Get data from DB
       if(Data) {
 
-        winstonLogger.info('userID found:')
+        winstonLogger.info('userName found:')
         tempData = Data
-        winstonLogger.info(Data.userID)
+        winstonLogger.info(Data.userName)
         response2 = true
         id = userData.detail
 
