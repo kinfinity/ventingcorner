@@ -45,7 +45,6 @@ const hm = new jsStringCompression.Hauffman()
        req.body.Name && 
        req.body.Email &&
        req.body.Password &&
-       req.body.BirthDate && 
        req.body.Address && 
        req.body.ProfileImage 
        ){
