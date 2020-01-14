@@ -107,13 +107,12 @@ const userService = {
         "userName": UserName,
         "name": Name,
         "email": Email,
-        "password": Password,
         "address": Address,
         "profileImage": ProfileImage
       }
     
       // temp password holder  
-    const ipassword = userData.password
+    const ipassword = Password
 
     // Hash user password on first save
     await hPassword.hash(ipassword).
