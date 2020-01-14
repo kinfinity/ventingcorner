@@ -42,17 +42,20 @@ const authUser = async (req, res, next) => {
     //authorise token gotten
     const resx = await authorisationService.authoriseToken(bearerToken)
     if(resx){
+
       winstonLogger.info('RES:')
       winstonLogger.info(JSON.stringify(resx,null,4))
-      req.body.userName = resx.userName
-
+      req.body.Email = resx.email
+      req.body.UserID = resx.userID
       req.body.authorized = true
+
     }else{
       winstonLogger.info('__AUTHORIZED__: false')
       req.body.authorized = false
       res.json({
-        state: 'FAILURE',
-        statusCode: publicEnums.VC_STATUS_CODES.INCORRECT_TOKEN,
+        request_url: '/authorise',
+        state: publicEnums.VC_STATES.INVALID_TOKEN,
+        statusCode: publicEnums.VC_STATUS_CODES.UNAUTHORISED,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_TOKEN,
         Data: null
       })
@@ -65,8 +68,9 @@ const authUser = async (req, res, next) => {
     
   }else{
     res.json({
-      state: 'FAILURE',
-      statusCode: publicEnums.VC_STATUS_CODES.NO_TOKEN,
+      request_url: '/authorise',
+      state: publicEnums.VC_STATES.INVALID_TOKEN,
+      statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.EMPTY_TOKEN,
       Data: null
     })
