@@ -38,12 +38,12 @@ const userSchema = new TSchema({
     email: {
         type: String,
         required: true,
-        unique: false
+        unique: true
     },
     password: {
         type: String,
         required: true,
-        unique: true
+        unique: false
     },
     phoneNumber:{
       type: Number,
