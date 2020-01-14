@@ -51,7 +51,7 @@ const userService = {
   _userModel: userModel,
 
   // Create new user
-  async createNewEmailUser(Name,Email,Password,Address,ProfileImage,Topics,BirthDate) {
+  async createNewEmailUser(UserName,Name,Email,Password,Address,ProfileImage,Topics,BirthDate) {
     winstonLogger.info('::userService')
 
     // Holds return data for this fucntion
@@ -104,17 +104,16 @@ const userService = {
     
     // Create static Data for user
       const userData = {
-        Name,
-        Email,
-        Password,
-        Address,
-        ProfileImage,
-        Topics,
-        BirthDate
+        "userName": UserName,
+        "name": Name,
+        "email": Email,
+        "password": Password,
+        "address": Address,
+        "profileImage": ProfileImage
       }
     
       // temp password holder  
-    const ipassword = userData.Password
+    const ipassword = userData.password
 
     // Hash user password on first save
     await hPassword.hash(ipassword).
