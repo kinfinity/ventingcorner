@@ -53,6 +53,7 @@ const hm = new jsStringCompression.Hauffman()
           
         // create user
         const payloadS =  await userService.createNewEmailUser(
+            req.body.UserName,
             req.body.Name,
             req.body.Email,
             req.body.Password,
