@@ -502,14 +502,16 @@ const userService = {
     })
     .then((userData) => {
 
-      winstonLogger.info('userData : ')
-      winstonLogger.info(userData)
-      response = {
-        UserName: userData.userName,
-        Name: userData.name,
-        Email: userData.email,
-        Address: userData.address,
-        ProfileImage: userData.profileImage
+      if(userData){
+          winstonLogger.info('userData : ')
+          winstonLogger.info(userData)
+          response = {
+            UserName: userData.userName,
+            Name: userData.name,
+            Email: userData.email,
+            Address: userData.address,
+            ProfileImage: userData.profileImage
+          }
       }
 
     })
@@ -518,7 +520,7 @@ const userService = {
         winstonLogger.error('ERROR getting Profile')
         winstonLogger.error(err.message)
 
-      return Promise.response({
+      return Promise.resolve({
         state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -527,7 +529,7 @@ const userService = {
 
     })
 
-    return Promise.response({
+    return Promise.resolve({
       state: publicEnums.VC_STATES.REQUEST_OK,
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
@@ -566,7 +568,7 @@ const userService = {
         winstonLogger.error('ERROR updating Profile')
         winstonLogger.error(err.message)
 
-      return Promise.response({
+      return Promise.resolve({
         state: 'failure',
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -575,7 +577,7 @@ const userService = {
 
     })
 
-    return Promise.response({
+    return Promise.resolve({
       state: 'success',
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
@@ -857,7 +859,7 @@ const userService = {
         winstonLogger.error('ERROR getting followers')
         winstonLogger.error(err.message)
 
-      return Promise.response({
+      return Promise.resolve({
         state: 'failure',
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -866,7 +868,7 @@ const userService = {
 
     })
 
-    return Promise.response({
+    return Promise.resolve({
       state: 'success',
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
@@ -899,7 +901,7 @@ const userService = {
         winstonLogger.error('ERROR getting followers')
         winstonLogger.error(err.message)
 
-      return Promise.response({
+      return Promise.resolve({
         state: 'failure',
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -908,7 +910,7 @@ const userService = {
 
     })
 
-    return Promise.response({
+    return Promise.resolve({
       state: 'success',
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
@@ -940,7 +942,7 @@ const userService = {
         winstonLogger.error('ERROR getting profile')
         winstonLogger.error(err.message)
 
-      return Promise.response({
+      return Promise.resolve({
         state: 'failure',
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
@@ -949,7 +951,7 @@ const userService = {
 
     })
 
-    return Promise.response({
+    return Promise.resolve({
       state: 'success',
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
