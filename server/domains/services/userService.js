@@ -186,6 +186,7 @@ const userService = {
     let id = null
 
     // Try email
+    winstonLogger.info(userData.detail)
     await userService._userModel.
       findOne({email: userData.detail}).
     then((Data) => {
