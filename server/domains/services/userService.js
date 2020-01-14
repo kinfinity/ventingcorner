@@ -190,6 +190,7 @@ const userService = {
       findOne({email: userData.detail}).
     then((Data) => {
 
+      winstonLogger.info('Searching for email')
       // Get data from DB
       if(Data) {
 
@@ -206,6 +207,9 @@ const userService = {
       
       //
       response1 = false
+      winstonLogger.error("Eror searching for email")
+      winstonLogger.error(err.message)
+      winstonLogger.error(err.stack)
 
       return Promise.resolve({
         state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
@@ -220,7 +224,8 @@ const userService = {
     await userService._userModel.
     findOne({userID: userData.detail}).
     then((Data) => {
-
+      
+      winstonLogger.info('Searching for username')
       // Get data from DB
       if(Data) {
 
@@ -237,6 +242,7 @@ const userService = {
 
       //
       winstonLogger.error('ERROR: searching for name')
+      winstonLogger.error(err.message)
       winstonLogger.error(err.stack)
 
       response2 = false
@@ -252,6 +258,7 @@ const userService = {
 
     if (!(response1 || response2)){
 
+      winstonLogger.info(response1 + " " + response2)
       // Break out
       winstonLogger.info(`ERROR AUTHENTICATING :::`)
       // Return false and and empty object
