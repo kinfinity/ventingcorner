@@ -39,7 +39,7 @@ const options = {
     rejectUnauthorized: false //true
 }
  
-const startServer = async function() {
+// const startServer = async function() {
     
     // const server = https.createServer(options).setMaxListeners(Infinity)
     const server = http.createServer().setMaxListeners(Infinity)
@@ -51,12 +51,13 @@ const startServer = async function() {
         winstonLogger.info('Listening on :' + server.address().port)
     })
 
-}
+// }
 
-throng(
-    {
-        workers: cpus,
-        lifetime: Infinity
-    },
-    startServer
-)
+
+// throng(
+//     {
+//         workers: cpus,
+//         lifetime: Infinity
+//     },
+//     startServer
+// )
