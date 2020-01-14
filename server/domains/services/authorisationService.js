@@ -26,6 +26,9 @@ const authorisationService = {
 
   let decodedToken = null
 
+  winstonLogger.info('acces TOKEN:')
+  winstonLogger.info(accessToken)
+
   // Verify token
   await authorisationService._tokenService.
   decodeToken(accessToken).
