@@ -87,11 +87,11 @@ const hm = new jsStringCompression.Hauffman()
           })
       
           winstonLogger.info("SIGNUP PAYLOAD")
-          winstonLogger.info(JSON.stringify(payloadA))
+          winstonLogger.info(JSON.stringify(payloadA,null,4))
 
           payloadS.state = 'failure'
           // Persist images if user was created 
-          if(payloadS.token !== null ){
+          if(!payloadS.token !== null ){
 
               winstonLogger.info('SAVE LOGO TO CLOUDINARY')
               // if it worked save the image to cloudinary with userName / profile # hm.decompress(req.body.Logo)
@@ -112,7 +112,7 @@ const hm = new jsStringCompression.Hauffman()
           }
 
           // Send the payload to client
-          res.json(payloadS)
+          res.json(payloadA)
 
       }
       else{
