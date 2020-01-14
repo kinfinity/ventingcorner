@@ -186,7 +186,6 @@ const userService = {
     let id = null
 
     // Try email
-    winstonLogger.info(userData.detail)
     await userService._userModel.
       findOne({email: userData.detail}).
     then((Data) => {
@@ -249,7 +248,7 @@ const userService = {
       response2 = false
       
       return Promise.resolve({
-        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+        state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
         token: null
@@ -264,7 +263,7 @@ const userService = {
       winstonLogger.info(`ERROR AUTHENTICATING :::`)
       // Return false and and empty object
       return Promise.resolve({
-        state: 'failure',
+        state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_USERNAME,
         token: null
