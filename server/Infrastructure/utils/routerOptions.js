@@ -33,7 +33,8 @@ const authUser = async (req, res, next) => {
   winstonLogger.info(`HEADERs: ${JSON.stringify(bearerHeader,null,4)}`)
 
   if(bearerHeader){
-    const bearer = bearerHeader.split('.') // .slice(7, token.length)
+    const bearer = bearerHeader.split(' ') // .slice(7, token.length)
+    winstonLogger.info(bearer[1])
     const bearerToken = bearer[1]
     req.Token = bearerToken
     winstonLogger.info(`TOKEN: ${bearerToken}`)
