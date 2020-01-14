@@ -62,6 +62,8 @@ const hm = new jsStringCompression.Hauffman()
             'Temp',// req.body.ProfileImage,// Gets updated on Logo upload to cloudinary
             req.body.Topics
         )
+        winstonLogger.info('CREATED:')
+        winstonLogger.info(JSON.stringify(payloadS,null,4))
       
         if(payloadS){
             
@@ -91,7 +93,7 @@ const hm = new jsStringCompression.Hauffman()
 
           payloadS.state = 'failure'
           // Persist images if user was created 
-          if(!payloadS.token !== null ){
+          if(payloadA.token !== null ){
 
               winstonLogger.info('SAVE LOGO TO CLOUDINARY')
               // if it worked save the image to cloudinary with userName / profile # hm.decompress(req.body.Logo)
@@ -106,8 +108,8 @@ const hm = new jsStringCompression.Hauffman()
               winstonLogger.info('COUDLINARY RESULTS')
               winstonLogger.info(result)
               winstonLogger.info('END')
-              payloadS.state = publicEnums.VC_STATES.REQUEST_OK
-              payloadS.request_url = '/signup'
+              payloadA.state = publicEnums.VC_STATES.REQUEST_OK
+              payloadA.request_url = '/signup'
 
           }
 
@@ -180,10 +182,10 @@ openAccessRouterService.route('/user/login').get(routeUtils.asyncMiddleware(asyn
 
             //if(!RedisCache.Whitelist.verify(req.body.detail)){
           
-              const payload = await authenticationController.authenticateuserAdmin(
-                req.body.detail,
-                req.body.password
-              )
+              const payload = await userService.authenticateUser({
+                detail: req.body.detail,
+                password: req.body.password
+              })
               winstonLogger.info("PAYLOAD")
               winstonLogger.info(JSON.stringify(payload))
               payload.state = 'failure'
@@ -205,7 +207,7 @@ openAccessRouterService.route('/user/login').get(routeUtils.asyncMiddleware(asyn
 
           res.json({
             request_url: '/user/login',
-            state: 'failure',
+            state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             token: null
@@ -219,7 +221,7 @@ openAccessRouterService.route('/user/login').get(routeUtils.asyncMiddleware(asyn
 
         res.json({
           request_url: '/user/login',
-          state: 'failure',
+          state: publicEnums.VC_STATES.REQUEST_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
           token: null
