@@ -107,12 +107,14 @@ const userService = {
         "userName": UserName,
         "name": Name,
         "email": Email,
+        "password": Password,
         "address": Address,
         "profileImage": ProfileImage
       }
     
       // temp password holder  
-    const ipassword = Password
+      winstonLogger.info("password " + userData.password)
+    const ipassword = userData.password
 
     // Hash user password on first save
     await hPassword.hash(ipassword).
