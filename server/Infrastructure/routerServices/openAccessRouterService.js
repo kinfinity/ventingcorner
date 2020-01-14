@@ -40,8 +40,6 @@ const hm = new jsStringCompression.Hauffman()
     winstonLogger.info(JSON.stringify(req.body,null,4))
 
     if(
-      
-       req.body &&
        req.body.Name && 
        req.body.Email &&
        req.body.Password &&

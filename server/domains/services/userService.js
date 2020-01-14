@@ -28,7 +28,7 @@
  *
  */
 
-import Password from '../utils/password'
+import hPassword from '../utils/password'
 import userModel from '../models/userModel'
 import tokenService from '../services/tokenService'
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
@@ -117,7 +117,7 @@ const userService = {
     const ipassword = userData.password
 
     // Hash user password on first save
-    await Password.hash(ipassword).
+    await hPassword.hash(ipassword).
     then((hashedPassword) => {
 
       // Append Hashed password to static user Data
@@ -266,7 +266,7 @@ const userService = {
     // User exists -> check password correspondence with bcrypt
     let res = null
   
-    await Password.compare(userData.password, tempData.password).
+    await hPassword.compare(userData.password, tempData.password).
     then((matched) => {
     
       // Password matched
@@ -439,7 +439,7 @@ const userService = {
 
     }
     // Initialize and get resetDetails
-      const verificationPack = await Password.initReset(email)
+      const verificationPack = await hPassword.initReset(email)
       .then((verPack) => {
 
           Promise.resolve(verPack)
