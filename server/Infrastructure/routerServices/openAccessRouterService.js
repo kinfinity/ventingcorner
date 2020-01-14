@@ -188,7 +188,6 @@ openAccessRouterService.route('/user/login').get(routeUtils.asyncMiddleware(asyn
               })
               winstonLogger.info("PAYLOAD")
               winstonLogger.info(JSON.stringify(payload))
-              payload.state = 'failure'
               if(payload){
                 RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
               }
