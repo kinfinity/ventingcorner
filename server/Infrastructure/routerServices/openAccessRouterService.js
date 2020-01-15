@@ -168,11 +168,10 @@ openAccessRouterService.route('/login').post(routeUtils.asyncMiddleware(async (r
         try {
 
             // *test cache
-            RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
+            // RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
             //
             winstonLogger.info('CHECK: redisCache')
-            // RedisCache.Whitelist.remove(req.body.detail)
-            winstonLogger.info(JSON.stringify(RedisCache.Whitelist.verify(req.body.detail),null,4))
+            // winstonLogger.info(JSON.stringify(RedisCache.Whitelist.verify(req.body.detail),null,4))
 
             //if(!RedisCache.Whitelist.verify(req.body.detail)){
           
@@ -182,9 +181,9 @@ openAccessRouterService.route('/login').post(routeUtils.asyncMiddleware(async (r
               })
               winstonLogger.info("PAYLOAD")
               winstonLogger.info(JSON.stringify(payload))
-              if(payload){
-                RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
-              }
+              // if(payload){
+              //   RedisCache.Whitelist.AddToken(req.body.detail, "testToken")
+              // }
               res.json(payload)
 
             // }else{
