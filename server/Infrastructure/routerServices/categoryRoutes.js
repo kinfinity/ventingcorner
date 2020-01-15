@@ -180,7 +180,7 @@ import categoryService from '../../domains/services/categoryService'
     try {
         
         // Use RedisCache
-        const payload = await categoryService()
+        const payload = await categoryService.getCategoryList()
 
         winstonLogger.info("PAYLOAD")
         winstonLogger.info(JSON.stringify(payload,null,4))
