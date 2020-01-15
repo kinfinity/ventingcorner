@@ -282,7 +282,7 @@ const categoryService = {
       let response = [{}],cat = null
       //
       await categoryService._categoryModel.
-      findAll({}).
+      find().
       then((result) => {
 
           // Succeeded in saving new comment to DB
