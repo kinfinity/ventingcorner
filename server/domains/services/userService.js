@@ -553,7 +553,8 @@ const userService = {
   async updateProfile(UserID,Data) {
 
     const options  = {
-      useFindAndModify: false
+      useFindAndModify: false,
+      new: true
     }
 
     winstonLogger.info('GET: user Info')
