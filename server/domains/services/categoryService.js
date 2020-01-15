@@ -279,7 +279,7 @@ const categoryService = {
     async getCategoryList(){
 
       // 
-      let response = [{}],cat = null
+      let response = [{}],cat = null,ind = 0
       //
       await categoryService._categoryModel.
       find().
@@ -289,11 +289,12 @@ const categoryService = {
           winstonLogger.info(' -> CategoryList')
           winstonLogger.info(JSON.stringify(result,null,4))
 
+          winstonLogger.info(result[ind].title)
+          winstonLogger.info(result[ind].default.title)
+
           if(result){
             for(cat in result){
-              winstonLogger.info(result.indexOf(cat.default))
-              winstonLogger.info(result[0])
-              winstonLogger.info("title: "+result[cat.index].title+" id: "+result[cat.index]._id)
+              winstonLogger.info("title: "+result[ind].title+" id: "+result[ind]._id)
               response.push({
                 "title": cat.title,
                 "id": cat._id
