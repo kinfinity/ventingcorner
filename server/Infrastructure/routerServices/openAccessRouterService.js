@@ -161,8 +161,8 @@ openAccessRouterService.route('/login').post(routeUtils.asyncMiddleware(async (r
     winstonLogger.info('REQUEST BODY')
     winstonLogger.info(JSON.stringify(req.body,null,4))
     if(
-      req.body.detail &&
-      req.body.password
+      req.body.Detail &&
+      req.body.Password
       ){
       
         try {
@@ -177,8 +177,8 @@ openAccessRouterService.route('/login').post(routeUtils.asyncMiddleware(async (r
             //if(!RedisCache.Whitelist.verify(req.body.detail)){
           
               const payload = await userService.authenticateUser({
-                detail: req.body.detail,
-                password: req.body.password
+                detail: req.body.Detail,
+                password: req.body.Password
               })
               winstonLogger.info("PAYLOAD")
               winstonLogger.info(JSON.stringify(payload))
