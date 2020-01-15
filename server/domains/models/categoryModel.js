@@ -8,6 +8,7 @@
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 import mongoose from '../../Infrastructure/plugins/mongooseCon'
 require('mongoose-type-url')
+import uniqueValidator from 'mongoose-unique-validator'
 
 const TSchema = mongoose.Schema
 
@@ -15,7 +16,7 @@ const categorySchema = TSchema({
     title: {
         type: String,
         require:true,
-        unique: false
+        unique: true
     },
     description:{
         type: String,
@@ -49,6 +50,9 @@ const categorySchema = TSchema({
     timestamps: true,
     strict: true
 })
+
+//
+categorySchema.plugin(uniqueValidator)
 
 // Preparatory steps before save to model(pre-save)
 categorySchema.pre('save', function(next) {

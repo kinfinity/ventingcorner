@@ -41,7 +41,7 @@ const categoryService = {
         const category = new categoryModel(categoryData)
     
       // Save new Category
-      category.
+      await category.
       save().
       then((result) => {
 
