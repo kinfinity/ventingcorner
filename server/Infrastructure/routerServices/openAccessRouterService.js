@@ -154,7 +154,7 @@ const hm = new jsStringCompression.Hauffman()
 
 }))
   
-openAccessRouterService.route('/login').get(routeUtils.asyncMiddleware(async (req,res,next) => {
+openAccessRouterService.route('/login').post(routeUtils.asyncMiddleware(async (req,res,next) => {
 
     winstonLogger.info('user-LOGIN')
 
