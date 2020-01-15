@@ -58,7 +58,10 @@ const userService = {
     let response = null
     
     // Check if user exists first returns promise resolved to true or false
-    await userService.userExists({Email,Name}).
+    await userService.userExists({
+      Email,
+      Name
+    }).
     then((result) => {
 
       winstonLogger.info('searching DB for user')
@@ -83,7 +86,7 @@ const userService = {
     // Becomes true if user already exists and we kick out of function
     if (response.value) {
 
-      if(response.type == "email"){
+      if(response.typeE == "email"){
         // Return to higher scope if there's a user
         return Promise.resolve({
           state: publicEnums.VC_STATES.RESOURCE_EXISTS,
@@ -91,7 +94,7 @@ const userService = {
           statusMessage: publicEnums.VC_STATUS_MESSAGES.SIGNUP_ERROR_EMAILEXISTS,
           token: null
         })
-      }else if(response.type == "user"){
+      }else if(response.typeU == "user"){
         return Promise.resolve({
           state: publicEnums.VC_STATES.RESOURCE_EXISTS,
           statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
@@ -352,7 +355,7 @@ const userService = {
     // Check email
     await userService.
     _userModel.
-    findOne({email: userE.email}).
+    findOne({email: userE.Email}).
     then((Data) => {
 
       winstonLogger.info(`checking data base for user with email `)
@@ -405,15 +408,18 @@ const userService = {
 
     })
 
-    let type = null
+    let typeE = null
+    let typeU = null
+
     if(eeResult1){
-      type = "email"
+      typeE = "email"
     }else if(eeResult2){
-        type = "user"
+        typeU = "user"
     }
     return eeResult = {
       value: eeResult1 || eeResult2,
-      type
+      typeE,
+      typeU
     }
 
   },
