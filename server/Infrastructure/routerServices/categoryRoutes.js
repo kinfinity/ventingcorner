@@ -209,7 +209,7 @@ import categoryService from '../../domains/services/categoryService'
 
     // update category description
     categoryRouter.route('/category/update')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('category-PROFILE')
     winstonLogger.info('REQ:')
