@@ -47,6 +47,9 @@ const authUser = async (req, res, next) => {
       winstonLogger.info(JSON.stringify(resx,null,4))
       req.body.Email = resx.email
       req.body.UserID = resx.userID
+      req.body.name = resx.body.name
+      req.body.address = resx.body.address
+      req.body.profileImage = resx.body.profileImage  
       req.body.authorized = true
 
     }else{

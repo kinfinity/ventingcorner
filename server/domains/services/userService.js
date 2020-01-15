@@ -303,8 +303,11 @@ const userService = {
     // Return a boolean(true) and signed JWT
     await Promise.resolve(tokenService.generateToken({
           email: tempData.email,
-          userName: tempData.Name,
-          userID: tempData._id
+          userName: tempData.userName,
+          userID: tempData._id,
+          name: tempData.name,
+          address: tempData.address,
+          profileImage: tempData.profileImage
     })).
     then((tk) => {
 
