@@ -383,7 +383,7 @@ const userService = {
     // Check Name
     await userService.
     _userModel.
-    findOne({Name: userE.UserName}).
+    findOne({userName: userE.UserName}).
     then((Data) => {
 
       winstonLogger.info(`checking data base for user Name`)
