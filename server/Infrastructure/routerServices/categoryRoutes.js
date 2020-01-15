@@ -139,17 +139,14 @@ import categoryService from '../../domains/services/categoryService'
 
     try {
         
-        const payload = await categoryService.getcategory(
+        const payload = await categoryService.getCategory(
             req.body.CategoryID,
             req.body.Title
         )
 
         winstonLogger.info("PAYLOAD")
         winstonLogger.info(JSON.stringify(payload,null,4))
-        payload.state = 'failure'
-        if(payload){
-            payload.state = 'success'
-        }
+        payload.request_url = '/category'
         res.json(payload)
 
     } catch (e) {
@@ -158,8 +155,10 @@ import categoryService from '../../domains/services/categoryService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
+            request_url: '/category',
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             Data: null
         })
 

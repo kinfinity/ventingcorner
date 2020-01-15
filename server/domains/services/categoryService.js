@@ -189,14 +189,34 @@ const categoryService = {
     },
 
     // get Category 
-    async getCategory(CategoryID){
+    async getCategory(CategoryID,Title){
 
         // 
-        let response = null
+        let response = null,factor = null
+        if(CategoryID && Title){
+
+          factor = {
+            _id: CategoryID,
+            title: Title
+          }
+
+        }else if(CategoryID){
+
+          factor = {
+            _id: CategoryID
+          }
+
+        }else if(Title){
+
+          factor = {
+            title: Title
+          }
+
+        }
         //
         await categoryService._categoryModel.
         findOne(
-            {title: CategoryID}
+            factor
         ).
         then((result) => {
 
@@ -225,7 +245,7 @@ const categoryService = {
                 state: publicEnums.VC_STATES.REQUEST_OK,
                 statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
                 statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
-                response
+                data: response
             })
 
     },
