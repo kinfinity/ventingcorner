@@ -512,11 +512,11 @@ const userService = {
           winstonLogger.info('userData : ')
           winstonLogger.info(userData)
           response = {
-            UserName: userData.userName,
-            Name: userData.name,
-            Email: userData.email,
-            Address: userData.address,
-            ProfileImage: userData.profileImage
+            userName: userData.userName,
+            name: userData.name,
+            email: userData.email,
+            address: userData.address,
+            profileImage: userData.profileImage
           }
       }
 
@@ -566,11 +566,11 @@ const userService = {
       winstonLogger.info(userData)
       
       response = {
-        UserName: userData.userName,
-        Name: userData.name,
-        Email: userData.email,
-        Address: userData.address,
-        ProfileImage: userData.profileImage
+        userName: userData.userName,
+        name: userData.name,
+        email: userData.email,
+        address: userData.address,
+        profileImage: userData.profileImage
       }
 
     })
