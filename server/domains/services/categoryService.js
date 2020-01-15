@@ -296,7 +296,7 @@ const categoryService = {
               t = result[ind].title
               i = result[ind]._id
               winstonLogger.info("title: "+t+" id: "+i)
-              response.push({t,i})
+              response.push({title,id})
             }
           } 
 
