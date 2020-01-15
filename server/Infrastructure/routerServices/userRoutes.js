@@ -108,9 +108,8 @@ import userService from '../../domains/services/userService'
       try {
           // 
           const payload = await userService.updateProfile(
-            req.body.UserName,
             req.body.UserID,
-            req.body.data
+            req.body.Data
           )
             
           winstonLogger.info("PAYLOAD")

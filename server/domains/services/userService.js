@@ -547,7 +547,7 @@ const userService = {
 /*
    * update Profile Info
    */
-  async updateProfile(Name,Email,data) {
+  async updateProfile(UserID,Data) {
 
     winstonLogger.info('GET: user Info')
     //
@@ -556,17 +556,22 @@ const userService = {
     await userService.
     _userModel.
     findOneAndUpdate({
-          Name,
-          Email
+          _id: UserID
         },
-        data
+        Data
     )
     .then((userData) => {
 
       winstonLogger.info('userData : ')
       winstonLogger.info(userData)
       
-      response
+      response = {
+        UserName: userData.userName,
+        Name: userData.name,
+        Email: userData.email,
+        Address: userData.address,
+        ProfileImage: userData.profileImage
+      }
 
     })
     .catch((err) => {

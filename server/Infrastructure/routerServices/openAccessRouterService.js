@@ -57,7 +57,6 @@ const hm = new jsStringCompression.Hauffman()
             req.body.Name,
             req.body.Email,
             req.body.Password,
-            req.body.BirthDate,
             req.body.Address,
             'Temp',// req.body.ProfileImage,// Gets updated on Logo upload to cloudinary
             req.body.Topics
