@@ -30,12 +30,12 @@ import categoryService from '../../domains/services/categoryService'
   const categoryRouter = express.Router([routeUtils.routerOptions])
 
   //  Protect all routes
-  categoryRouter.use('/VentingCorner/category',routeUtils.asyncMiddleware(routeUtils.authcategory))
+  categoryRouter.use('/category',routeUtils.asyncMiddleware(routeUtils.authcategory))
   
   
   // create category  | ~* add admin protect
-  categoryRouter.route('/VentingCorner/category/create')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+  categoryRouter.route('/category/create').use(routeUtils.csrfMiddleware)
+    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('CREATE-CATEGORY')
     winstonLogger.info('REQ:')
@@ -43,7 +43,7 @@ import categoryService from '../../domains/services/categoryService'
     
       try {
           
-          const payload = await categoryService.createcategory(
+          const payload = await categoryService.createCategory(
             req.body.Title,
             req.body.Description
           )
@@ -69,13 +69,9 @@ import categoryService from '../../domains/services/categoryService'
             winstonLogger.info('END')
 
           }
-          
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
-          }
+
           res.json(payload)
 
       } catch (e) {
@@ -84,8 +80,9 @@ import categoryService from '../../domains/services/categoryService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            state: publicEnums.VC_STATES.REQUEST_ERROR,
+            statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_ERROR,
             Data: null
         })
 
@@ -96,7 +93,7 @@ import categoryService from '../../domains/services/categoryService'
   }))
 
   // delete category
-  categoryRouter.route('/VC/category/delete')
+  categoryRouter.route('/category/delete')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('category-PROFILE')
@@ -135,7 +132,7 @@ import categoryService from '../../domains/services/categoryService'
   }))
 
     // get category description
-    categoryRouter.route('/VentingCorner/category')
+    categoryRouter.route('/category')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('GET-CATEGORY')
@@ -175,7 +172,7 @@ import categoryService from '../../domains/services/categoryService'
     }))
 
     // get all categories [ids and titles]
-    categoryRouter.route('/VentingCorner/categorylist')
+    categoryRouter.route('/categorylist')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('GET-CATEGORYLIST')
@@ -213,7 +210,7 @@ import categoryService from '../../domains/services/categoryService'
     }))
 
     // update category description
-    categoryRouter.route('/VentingCorner/category/update')
+    categoryRouter.route('/category/update')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('category-PROFILE')
@@ -275,7 +272,7 @@ import categoryService from '../../domains/services/categoryService'
     }))
 
     // delete category
-    categoryRouter.route('/VentingCorner/category/delete')
+    categoryRouter.route('/category/delete')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('DELETE-CATEGORY')
@@ -316,7 +313,7 @@ import categoryService from '../../domains/services/categoryService'
 
     
     // Get category vents
-    categoryRouter.route('/VentingCorner/category/vents')
+    categoryRouter.route('/category/vents')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('DELETE-CATEGORY')
@@ -354,5 +351,7 @@ import categoryService from '../../domains/services/categoryService'
     next()
 
     }))
+
+    
 
   module.exports = categoryRouter

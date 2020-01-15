@@ -28,6 +28,7 @@ const VC_STATUS_CODES = {
 
 const VC_STATUS_MESSAGES = {
     REQUEST_OK: "Smooth sailing",
+    REQUEST_ERROR: "incorrect request",
     ASSERTION_ERR: "code Assertion Error, Check Logs",
     INTERNAL_SERVER_ERROR: "Error while processing request",
     CSRF_ERROR: "CSRF TOKEN tampered with",
@@ -43,7 +44,8 @@ const VC_STATUS_MESSAGES = {
     EXPIRED_TOKEN: "Token Expired",
     REVOKED_TOKEN: "Revoked Token : Logged out",
     WRONG_ACCESS: "Aren't permitted to hit this endpoint",
-    MAX_LOGINS_EXCEEDED: "maximum amount of Logins exceeded"
+    MAX_LOGINS_EXCEEDED: "maximum amount of Logins exceeded",
+    RESOURCE_EXISTS: "resource already exists"
 
 }
 

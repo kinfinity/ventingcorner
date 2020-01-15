@@ -21,6 +21,18 @@ const categoryService = {
     async createCategory(Category, Description){
         
         let response = null
+        
+        //check if category exists
+        const res = await categoryService.categoryExists(Category)
+        if(res){
+          return Promise.resolve({
+            state: publicEnums.VC_STATES.RESOURCE_EXISTS,
+            statusCode: publicEnums.VC_STATUS_CODES.CONFLICT,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.RESOURCE_EXISTS
+          })
+        }
+        //continue if it doesn't
+
         // Create static Data for Category
         const categoryData = {
             title: Category,
@@ -34,27 +46,27 @@ const categoryService = {
       then((result) => {
 
         // Succeeded in saving new post to DB
-        winstonLogger.info(' -> post UPDATED')
+        winstonLogger.info(' -> category CREATED')
         winstonLogger.info(result)
         response = Promise.resolve(result.text)
 
       }).
       catch((err) => {
 
-        winstonLogger.error(' -> post NOT UPDATED')
+        winstonLogger.error(' -> category NOT CREATED')
         winstonLogger.error(err)
 
         return Promise.resolve({
-          state: 'failure',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
         })
 
       })
 
         //return updated Text
         return Promise.resolve({
-            state: 'success',
+            state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
             response
@@ -320,6 +332,39 @@ const categoryService = {
                 response
             })
 
+    },
+    async categoryExists(Title) {
+
+      let eeResult = null
+  
+      // Check 
+      await categoryService._categoryModel.
+      findOne({title: Title}).
+      then((Data) => {
+  
+        winstonLogger.info(`checking data base for category title `)
+        if(Data){
+    
+          if (Data.length === 0) {
+  
+            winstonLogger.info('no such category')
+            eeResult = Promise.resolve(false)
+  
+          }
+  
+          winstonLogger.info(`FOUND: ${Data}`)
+          eeResult = Promise.resolve(true)
+        }
+  
+      }).
+      catch((err) => {
+  
+        winstonLogger.info('error checking database')
+        winstonLogger.info(err)
+        eeResult1 = Promise.resolve(false)
+  
+      })
+        return eeResult  
     }
 
 
