@@ -291,6 +291,8 @@ const categoryService = {
 
           if(result){
             for(cat in result){
+              winstonLogger.info(result[result.indexOf(cat)])
+              winstonLogger.info(result[0])
               winstonLogger.info("title: "+result[cat.index].title+" id: "+result[cat.index]._id)
               response.push({
                 "title": cat.title,
