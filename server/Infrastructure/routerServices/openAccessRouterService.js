@@ -120,6 +120,7 @@ const hm = new jsStringCompression.Hauffman()
       else{
 
           winstonLogger.info('INFO: user not created')
+          res.json(payloadS)
 
       }
     } catch(e){

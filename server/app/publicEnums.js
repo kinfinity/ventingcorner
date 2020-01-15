@@ -1,5 +1,5 @@
 const VC_STATES = {
-    REQUEST_OK: "smooth sailing",
+    REQUEST_OK: "smooth_sailing",
     REQUEST_ERROR: "",
     AUTHENTICATION_ERROR: "authentication_error",
     INVALID_REQUEST_ERROR: "invalid_request_error",
@@ -10,7 +10,7 @@ const VC_STATES = {
     INVALID_TOKEN: "invalid_token",
     UNAUTHORISED:"unauthorised_access",
     INVALID_RESOURCE: "invalid_resource",
-    RESOURCE_EXISTS: "resource already exists"
+    RESOURCE_EXISTS: "resource_exists"
 }
 
 
