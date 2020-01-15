@@ -275,6 +275,50 @@ const categoryService = {
             })
 
     },
+    // get CategoryList
+    async getCategoryList(){
+
+      // 
+      let response = null
+      //
+      await categoryService._categoryModel.
+      find().
+      then((result) => {
+
+          // Succeeded in saving new comment to DB
+          winstonLogger.info(' -> CategoryList')
+          winstonLogger.info(JSON.stringify(result,null,4))
+
+          if(result){
+            for(cat in result){
+              winstonLogger.info("title: "+cat.title+" id: "+cat._id)
+              response.push(cat.title,cat._id)
+            }
+          } 
+
+        }).
+        catch((err) => {
+  
+          winstonLogger.error(' Failed Getting CategoryList')
+          winstonLogger.error(err.stack)
+
+          return Promise.resolve({
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
+          })
+  
+        })
+
+          // return Category overview
+          return Promise.resolve({
+              state: publicEnums.VC_STATES.REQUEST_OK,
+              statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
+              statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
+              response
+          })
+
+  },
     
     // add Post to Category
     async addPost(PostID,CategoryID){
