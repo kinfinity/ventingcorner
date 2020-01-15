@@ -99,7 +99,7 @@ import userService from '../../domains/services/userService'
   
   // Update user Info
   userRouter.route('/user/update')
-  .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+  .post(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('user-CONTACTINFO')
     winstonLogger.info('REQUEST BODY')

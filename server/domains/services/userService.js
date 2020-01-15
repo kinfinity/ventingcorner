@@ -552,6 +552,10 @@ const userService = {
    */
   async updateProfile(UserID,Data) {
 
+    const options  = {
+      useFindAndModify: false
+    }
+
     winstonLogger.info('GET: user Info')
     winstonLogger.info(JSON.stringify(Data,null,4))
     //
@@ -562,7 +566,8 @@ const userService = {
     findOneAndUpdate({
           _id: UserID
         },
-        Data
+        Data,
+        options
     )
     .then((userData) => {
 
