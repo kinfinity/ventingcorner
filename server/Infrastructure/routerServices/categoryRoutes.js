@@ -101,7 +101,7 @@ import categoryService from '../../domains/services/categoryService'
     
       try {
           
-          const payload = await categoryService.deletecategory(
+          const payload = await categoryService.deleteCategory(
             req.body.CategoryID
           )
 
