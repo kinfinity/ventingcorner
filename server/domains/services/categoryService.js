@@ -279,7 +279,7 @@ const categoryService = {
     async getCategoryList(){
 
       // 
-      let response = null
+      let response = null,cat = null
       //
       await categoryService._categoryModel.
       find().
