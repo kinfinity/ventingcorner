@@ -65,7 +65,7 @@ const hm = new jsStringCompression.Hauffman()
         winstonLogger.info('CREATED:')
         winstonLogger.info(JSON.stringify(payloadS,null,4))
       
-        if(payloadS){
+        if(payloadS.statusCode !== 402){
             
           // done with SIGNUP
           // authenticate user -> creates token
@@ -120,12 +120,6 @@ const hm = new jsStringCompression.Hauffman()
       else{
 
           winstonLogger.info('INFO: user not created')
-            res.json({
-              request_url: '/signup',
-              state: publicEnums.VC_STATES.INVALID_RESOURCE,
-              statusCode: publicEnums.VC_STATUS_CODES.REQUEST_FAILED,
-              token: null
-        })
 
       }
     } catch(e){
