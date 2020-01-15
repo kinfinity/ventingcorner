@@ -553,6 +553,7 @@ const userService = {
   async updateProfile(UserID,Data) {
 
     winstonLogger.info('GET: user Info')
+    winstonLogger.info(JSON.stringify(Data,null,4))
     //
     let response = null
     // 
