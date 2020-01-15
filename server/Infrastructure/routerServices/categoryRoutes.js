@@ -33,11 +33,11 @@ import categoryService from '../../domains/services/categoryService'
   categoryRouter.use('/category',routeUtils.asyncMiddleware(routeUtils.authcategory))
   
   
-  categoryRouter.use('/category/create',routeUtils.asyncMiddleware(routeUtils.csrfMiddleware))
+  categoryRouter.use(routeUtils.csrfMiddleware).route('/category/create')
 
   // create category  | ~* add admin protect
   categoryRouter.route('/category/create')
-    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .post(routeUtils.asyncMiddleware(async(req,res,next) => {
     
     winstonLogger.info('CREATE-CATEGORY')
     winstonLogger.info('REQ:')
