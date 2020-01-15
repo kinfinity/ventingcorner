@@ -77,6 +77,10 @@ const categoryService = {
     // update description
     async updateDescription(Description, Category){
 
+        const options  = {
+          useFindAndModify: false,
+          new: true
+        }
          //
          let uDescription = null 
          // 
@@ -86,32 +90,40 @@ const categoryService = {
              },
              {
                  description: Description
-             }
+             },
+             options
          ).
          then((result) => {
  
-             // Succeeded in saving new comment to DB
-             winstonLogger.info(' -> comment UPDATED')
+            if(!result){
+              return Promise.resolve({
+                state: publicEnums.VC_STATES.INVALID_RESOURCE,
+                statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
+                statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS
+              })
+            }
+             // Succeeded in saving new category to DB
+             winstonLogger.info(' -> category UPDATED')
              winstonLogger.info(result)
              uDescription = Promise.resolve(result.description)
      
            }).
            catch((err) => {
      
-             winstonLogger.error(' -> comment NOT UPDATED')
+             winstonLogger.error(' -> category NOT UPDATED')
              winstonLogger.error(err)
      
              return Promise.resolve({
-               state: 'failure',
+               state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
                statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-               statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+               statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
              })
      
            })
      
              //return updated Text
              return Promise.resolve({
-                 state: 'success',
+                 state: publicEnums.VC_STATES.REQUEST_OK,
                  statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
                  statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
                  uDescription
@@ -121,7 +133,11 @@ const categoryService = {
 
     //update Category
     async updateImage(ImageUrl, Category){
-      
+
+        const options  = {
+          useFindAndModify: false,
+          new: true
+        }
         //
         let uImageUrl = null 
         // 
@@ -131,36 +147,44 @@ const categoryService = {
             },
             {
                 image: ImageUrl
-            }
+            },
+            options
         ).
         then((result) => {
 
+            if(!result){
+              return Promise.resolve({
+                state: publicEnums.VC_STATES.INVALID_RESOURCE,
+                statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
+                statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS
+              })
+            }
             // Succeeded in saving new comment to DB
             winstonLogger.info(' -> Category UPDATED')
             winstonLogger.info(result)
             uImageUrl = Promise.resolve(result.description)
     
-          }).
-          catch((err) => {
+      }).
+      catch((err) => {
     
             winstonLogger.error(' -> Category NOT UPDATED')
             winstonLogger.error(err)
     
             return Promise.resolve({
-              state: 'failure',
+              state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-              statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+              statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
             })
     
-          })
+      })
     
-            //return updated ImageUrl
-            return Promise.resolve({
-                state: 'success',
-                statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
-                statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
-                uImageUrl
-            })
+      //return updated ImageUrl
+      return Promise.resolve({
+          state: publicEnums.VC_STATES.REQUEST_OK,
+          statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
+          uImageUrl
+      })
 
     },
 
