@@ -28,12 +28,9 @@ import categoryService from '../../domains/services/categoryService'
 
   //  Router for category calls 
   const categoryRouter = express.Router([routeUtils.routerOptions])
-
-  //  Protect all routes
-  categoryRouter.use('/category',routeUtils.asyncMiddleware(routeUtils.authcategory))
-  
-  
-  categoryRouter.use(routeUtils.csrfMiddleware)
+    
+  //
+  categoryRouter.use(routeUtils.csrfMiddleware)  
 
   // create category  | ~* add admin protect
   categoryRouter.route('/category/create')
