@@ -105,7 +105,7 @@ const categoryService = {
              // Succeeded in saving new category to DB
              winstonLogger.info(' -> category UPDATED')
              winstonLogger.info(result)
-             uDescription = Promise.resolve(result.description)
+             uDescription = result
      
            }).
            catch((err) => {
@@ -139,7 +139,7 @@ const categoryService = {
           new: true
         }
         //
-        let uImageUrl = null 
+        let obj = null 
         // 
         await categoryService._categoryModel.findOneAndUpdate(
             {
@@ -162,7 +162,7 @@ const categoryService = {
             // Succeeded in saving new comment to DB
             winstonLogger.info(' -> Category UPDATED')
             winstonLogger.info(result)
-            uImageUrl = Promise.resolve(result.description)
+            obj = result
     
       }).
       catch((err) => {
@@ -183,7 +183,7 @@ const categoryService = {
           state: publicEnums.VC_STATES.REQUEST_OK,
           statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
-          uImageUrl
+          obj
       })
 
     },
@@ -203,7 +203,7 @@ const categoryService = {
             // Succeeded in saving new comment to DB
             winstonLogger.info(' -> Category UPDATED')
             winstonLogger.info(result)
-            response = Promise.resolve(result)
+            response = result
     
           }).
           catch((err) => {
@@ -211,7 +211,7 @@ const categoryService = {
             winstonLogger.error(' -> Category NOT UPDATED')
             winstonLogger.error(err)
     
-            
+
             return Promise.resolve({
               state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
@@ -240,7 +240,7 @@ const categoryService = {
         // 
         let response = null
 
-        this._categoryModel.
+        await categoryService._categoryModel.
         findOneAndRemove(
             {_id: CategoryID},
             options
