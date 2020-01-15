@@ -240,16 +240,12 @@ import categoryService from '../../domains/services/categoryService'
         }// Fire Event to sync up with description before reaching here
 
         const payload = await categoryService.updateDescription(
-            req.body.category,
+            req.body.CategoryID,
             req.body.Description
         )
 
         winstonLogger.info("PAYLOAD")
         winstonLogger.info(JSON.stringify(payload,null,4))
-        payload.state = 'failure'
-        if(payload){
-            payload.state = 'success'
-        }
         res.json(payload)
 
     } catch (e) {

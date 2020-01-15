@@ -75,7 +75,7 @@ const categoryService = {
     },
 
     // update description
-    async updateDescription(Description, Category){
+    async updateDescription(CategoryID, Description){
 
         const options  = {
           useFindAndModify: false,
@@ -84,9 +84,9 @@ const categoryService = {
          //
          let uDescription = null 
          // 
-         this._categoryModel.findOneAndUpdate(
+         await categoryService._categoryModel.findOneAndUpdate(
              {
-                 title: Category
+                 _id: CategoryID
              },
              {
                  description: Description
@@ -141,7 +141,7 @@ const categoryService = {
         //
         let uImageUrl = null 
         // 
-        this._categoryModel.findOneAndUpdate(
+        await categoryService._categoryModel.findOneAndUpdate(
             {
                 title: Category
             },
@@ -189,14 +189,14 @@ const categoryService = {
     },
 
     // get Category 
-    async getCategory(Category){
+    async getCategory(CategoryID){
 
         // 
         let response = null
         //
         this._categoryModel.
         findOne(
-            {title: Category}
+            {title: CategoryID}
         ).
         then((result) => {
 
@@ -212,16 +212,16 @@ const categoryService = {
             winstonLogger.error(err)
     
             return Promise.resolve({
-              state: 'failure',
+              state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-              statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+              statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
             })
     
           })
 
             // return Category overview
             return Promise.resolve({
-                state: 'success',
+                state: publicEnums.VC_STATES.REQUEST_OK,
                 statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
                 statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
                 response
