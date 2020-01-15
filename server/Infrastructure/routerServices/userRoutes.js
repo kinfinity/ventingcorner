@@ -110,11 +110,11 @@ import userService from '../../domains/services/userService'
           const payload = await userService.updateProfile(
             req.body.UserID,
             {
-              name: req.body.Name || req.body.name,
-              address: req.body.Address || req.body.address,
-              profileImage: req.body.ProfileImage || req.body.profileImage
+              name: req.body.Data.Name || req.body.name,
+              address: req.body.Data.Address || req.body.address,
+              profileImage: req.body.Data.ProfileImage || req.body.profileImage
             }
-            
+
           )
             
           winstonLogger.info("PAYLOAD")
