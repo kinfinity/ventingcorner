@@ -279,10 +279,10 @@ const categoryService = {
     async getCategoryList(){
 
       // 
-      let response = null,cat = null
+      let response = [{}],cat = null
       //
       await categoryService._categoryModel.
-      find().
+      findAll({}).
       then((result) => {
 
           // Succeeded in saving new comment to DB
@@ -292,7 +292,10 @@ const categoryService = {
           if(result){
             for(cat in result){
               winstonLogger.info("title: "+cat.title+" id: "+cat._id)
-              response.push(cat.title,cat._id)
+              response.push({
+                "title": cat.title,
+                "id": cat._id
+              })
             }
           } 
 
