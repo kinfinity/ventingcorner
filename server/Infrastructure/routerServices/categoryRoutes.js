@@ -34,8 +34,8 @@ import categoryService from '../../domains/services/categoryService'
   
   
   // create category  | ~* add admin protect
-  categoryRouter.route('/category/create').use(routeUtils.csrfMiddleware)
-    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
+  categoryRouter.route('/category/create')
+    .post(routeUtils.csrfMiddleware,routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('CREATE-CATEGORY')
     winstonLogger.info('REQ:')
@@ -94,7 +94,7 @@ import categoryService from '../../domains/services/categoryService'
 
   // delete category
   categoryRouter.route('/category/delete')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .delete(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('category-PROFILE')
     winstonLogger.info('REQ:')
