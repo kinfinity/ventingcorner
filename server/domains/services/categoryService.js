@@ -279,8 +279,10 @@ const categoryService = {
     async getCategoryList(){
 
       // 
-      let response = [],cat = null,ind = 0
-      //
+      let response = [{"title":"obj_id"}],cat = null,ind = 0,t=null,i=null
+      //clear 
+      response.pop()
+      //-
       await categoryService._categoryModel.
       find().
       then((result) => {
@@ -291,12 +293,10 @@ const categoryService = {
 
           if(result){
             for(cat in result){
-              winstonLogger.info("title: "+result[ind].title+" id: "+result[ind]._id)
-              response.push(
-                JSON.parse({
-                  "title": cat.title,
-                  "id": cat._id
-              }))
+              t = result[ind].title
+              i = result[ind]._id
+              winstonLogger.info("title: "+t+" id: "+i)
+              response.push({t,i})
             }
           } 
 
