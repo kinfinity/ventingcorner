@@ -194,7 +194,7 @@ const categoryService = {
         // 
         let response = null
         //
-        this._categoryModel.
+        await categoryService._categoryModel.
         findOne(
             {title: CategoryID}
         ).
@@ -211,6 +211,7 @@ const categoryService = {
             winstonLogger.error(' -> Category NOT UPDATED')
             winstonLogger.error(err)
     
+            
             return Promise.resolve({
               state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
