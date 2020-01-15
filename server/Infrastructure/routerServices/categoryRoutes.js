@@ -33,7 +33,7 @@ import categoryService from '../../domains/services/categoryService'
   categoryRouter.use('/category',routeUtils.asyncMiddleware(routeUtils.authcategory))
   
   
-  categoryRouter.use('/category/create',routeUtils.csrfMiddleware)
+  categoryRouter.use('/category/create',routeUtils.asyncMiddleware(routeUtils.csrfMiddleware))
 
   // create category  | ~* add admin protect
   categoryRouter.route('/category/create')
