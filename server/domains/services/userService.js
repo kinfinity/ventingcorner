@@ -60,7 +60,7 @@ const userService = {
     // Check if user exists first returns promise resolved to true or false
     await userService.userExists({
       Email,
-      Name
+      UserName
     }).
     then((result) => {
 
@@ -383,7 +383,7 @@ const userService = {
     // Check Name
     await userService.
     _userModel.
-    findOne({Name: userE.Name}).
+    findOne({Name: userE.UserName}).
     then((Data) => {
 
       winstonLogger.info(`checking data base for user Name`)
