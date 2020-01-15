@@ -289,9 +289,6 @@ const categoryService = {
           winstonLogger.info(' -> CategoryList')
           winstonLogger.info(JSON.stringify(result,null,4))
 
-          winstonLogger.info(result[ind].title)
-          winstonLogger.info(result[ind].default.title)
-
           if(result){
             for(cat in result){
               winstonLogger.info("title: "+result[ind].title+" id: "+result[ind]._id)
