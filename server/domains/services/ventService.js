@@ -236,9 +236,7 @@ const ventService = {
         {
           _id: VentID,
           created_by: UserID
-        },
-        options
-      ).
+      }).
       then((data) => {
         winstonLogger.info('RANT LIST')
         winstonLogger.info(data.rants)
