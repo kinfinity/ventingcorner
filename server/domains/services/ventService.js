@@ -19,7 +19,7 @@ const ventService = {
     _ventModel: ventModel,
 
     // create Vent
-    async createVent(Title,Text,Category,CategoryID){
+    async createVent(Title,Text,Category,CategoryID,UserID){
 
         //
         let ventID = null
@@ -28,7 +28,8 @@ const ventService = {
           title: Title,
           text: Text,
           categoryID: CategoryID,
-          category: Category
+          category: Category,
+          created_by: UserID
         }
         const Vent = new ventModel(VentData)
     

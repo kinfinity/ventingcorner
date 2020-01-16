@@ -43,7 +43,8 @@ import ventEvents from '../../interfaces/Events/ventEvents'
             req.body.Title,
             req.body.Text,
             req.body.Category,
-            req.body.CategoryID
+            req.body.CategoryID,
+            req.body.UserID
           )
 
           winstonLogger.info("PAYLOAD")
