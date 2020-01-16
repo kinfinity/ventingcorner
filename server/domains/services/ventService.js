@@ -157,13 +157,37 @@ const ventService = {
     },
 
     // get Vent 
-    async getVent(VentID){
+    async getVent(VentID,VentTitle){
+
+      const options = {
+        useFindAndModify: false,
+        new: true
+      }
 
         //
-        let response = null
-        /
-        this._ventModel.
-        findOne({_id: VentID}).
+        let response = null, factor = null
+        if(VentID && VentTitle){
+  
+          factor = {
+            _id: VentID,
+            title: VentTitle
+          }
+  
+        }else if(VentID){
+  
+          factor = {
+            _id: VentID
+          }
+  
+        }else if(VentTitle){
+  
+          factor = {
+            title: Title
+          }
+  
+        }
+        await ventService._ventModel.
+        findOne(factor,options).
       then((result) => {
 
         // Succeeded in saving new Vent to DB
@@ -199,39 +223,22 @@ const ventService = {
     },
 
     // delete Vent
-    async deleteVent(VentID,VentTitle,UserID){
+    async deleteVent(VentID,UserID){
         
       const options = {
         useFindAndModify: false,
         new: true
       }
       //
-      let rantIDList = null,response = null, factor = null
-      if(VentID && VentTitle){
-
-        factor = {
-          _id: VentID,
-          title: VentTitle,
-          created_by: UserID
-        }
-
-      }else if(VentID){
-
-        factor = {
-          _id: VentID,
-          created_by: UserID
-        }
-
-      }else if(VentTitle){
-
-        factor = {
-          title: Title,
-          created_by: UserID
-        }
-
-      }
+      let rantIDList = null,response = null
       // pack comments 
-      await ventService._ventModel.findOne(factor,options).
+      await ventService._ventModel.findOne(
+        {
+          _id: VentID,
+          created_by: UserID
+        },
+        options
+      ).
       then((data) => {
         winstonLogger.info('RANT LIST')
         winstonLogger.info(data.rants)
@@ -243,9 +250,12 @@ const ventService = {
       await ventService.
       _ventModel.
       findOneAndRemove(
-        factor,
+        {
+          _id: VentID,
+          created_by: UserID
+        },
         options
-        ).
+      ).
       then((result) => {
 
         //
