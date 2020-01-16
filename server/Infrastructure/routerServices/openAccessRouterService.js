@@ -90,8 +90,7 @@ const hm = new jsStringCompression.Hauffman()
           winstonLogger.info("SIGNUP PAYLOAD")
           winstonLogger.info(JSON.stringify(payloadA,null,4))
 
-          payloadS.state = 'failure'
-          // Persist images if user was created 
+          // Persist images if user was created  ---> OPTIMIZE !!! FIRE AS EVENT
           if(payloadA.token !== null ){
 
               winstonLogger.info('SAVE LOGO TO CLOUDINARY')

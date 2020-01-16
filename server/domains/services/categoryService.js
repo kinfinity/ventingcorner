@@ -317,6 +317,7 @@ const categoryService = {
               i = result[ind]._id
               winstonLogger.info("title: "+t+" id: "+i)
               response.push({title,id})
+              ind++
             }
           } 
 
@@ -344,17 +345,17 @@ const categoryService = {
 
   },
     
-    // add Post to Category
-    async addPost(PostID,CategoryID){
+    // add Vent to Category
+    async addVent(VentID,CategoryID){
 
         // 
         let response = null
 
-        this._categoryModel.
+        await categoryService._categoryModel.
         findOneAndUpdate(
             {_id: CategoryID},
             {
-              $push: {posts: PostID}
+              $push: {vents: VentID}
             }
         ).
         then((result) => {
@@ -371,16 +372,16 @@ const categoryService = {
             winstonLogger.error(err)
     
             return Promise.resolve({
-              state: 'failure',
+              state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-              statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+              statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
             })
     
           })
 
             // 
             return Promise.resolve({
-                state: 'success',
+                state: publicEnums.VC_STATES.REQUEST_OK,
                 statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
                 statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
                 response
@@ -388,22 +389,22 @@ const categoryService = {
 
     },
     
-    // remove Post from Category
-    async removePost(PostID,CategoryID){
+    // remove Vent from Category
+    async removeVent(VentID,CategoryID){
 
         // 
         let response = null
 
-        this._categoryModel.
+        await categoryService._categoryModel.
         findOneAndRemove(
             {_id: CategoryID},
             {
-              $pull: {posts: PostID}
+              $pull: {vents: VentID}
             }
         ).
         then((result) => {
 
-            // Removing Post from Category in DB
+            // Removing Vent from Category in DB
             winstonLogger.info(' -> Category UPDATED')
             winstonLogger.info(result)
             response = Promise.resolve(result)
@@ -415,7 +416,7 @@ const categoryService = {
             winstonLogger.error(err)
     
             return Promise.resolve({
-              state: 'failure',
+              state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
               statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
               statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
             })
@@ -424,7 +425,7 @@ const categoryService = {
 
             // 
             return Promise.resolve({
-                state: 'success',
+                state: publicEnums.VC_STATES.REQUEST_OK,
                 statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
                 statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
                 response

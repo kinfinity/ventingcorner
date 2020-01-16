@@ -979,7 +979,95 @@ const userService = {
       Data: response
     })
 
-  }
+  },
+
+  // add Vent to User
+  async addVent(VentID,UserID){
+
+    // 
+    let response = null
+
+    await userService._userModel.
+    findOneAndUpdate(
+        {_id: UserID},
+        {
+          $push: {vents: VentID}
+        }
+    ).
+    then((result) => {
+
+        // Succeeded in adding post to Category in DB
+        winstonLogger.info(' -> User UPDATED')
+        winstonLogger.info(result)
+        response = Promise.resolve(result)
+
+      }).
+      catch((err) => {
+
+        winstonLogger.error(' -> User NOT UPDATED')
+        winstonLogger.error(err)
+
+        return Promise.resolve({
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
+        })
+
+      })
+
+        // 
+        return Promise.resolve({
+            state: publicEnums.VC_STATES.REQUEST_OK,
+            statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
+            response
+        })
+
+},
+
+// remove Vent from Category
+async removeVent(VentID,CategoryID){
+
+    // 
+    let response = null
+
+    await userService._userModel.
+    findOneAndRemove(
+        {_id: UserID},
+        {
+          $pull: {posts: VentID}
+        }
+    ).
+    then((result) => {
+
+        // Removing Vent from Category in DB
+        winstonLogger.info(' -> User UPDATED')
+        winstonLogger.info(result)
+        response = Promise.resolve(result)
+
+      }).
+      catch((err) => {
+
+        winstonLogger.error(' -> User NOT UPDATED')
+        winstonLogger.error(err)
+
+        return Promise.resolve({
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+        })
+
+      })
+
+        // 
+        return Promise.resolve({
+            state: publicEnums.VC_STATES.REQUEST_OK,
+            statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
+            response
+        })
+
+}
 
 }
 

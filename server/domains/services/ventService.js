@@ -19,25 +19,28 @@ const ventService = {
     _ventModel: ventModel,
 
     // create Vent
-    async createVent(Text){
+    async createVent(Title,Text,Category,CategoryID){
 
         //
-        let response = null
+        let ventID = null
         // Create static Data for comment
         const VentData = {
-            text: Text
+          title: Title,
+          text: Text,
+          categoryID: CategoryID,
+          category: Category
         }
         const Vent = new ventModel(VentData)
     
       // Save new Vent
-      Vent.
+      await Vent.
       save().
       then((result) => {
 
         // Succeeded in saving new Vent to DB
         winstonLogger.info(' -> Vent CREATED')
         winstonLogger.info(result)
-        response = Promise.resolve(result._id)
+        ventID = result._id
 
       }).
       catch((err) => {
@@ -59,7 +62,7 @@ const ventService = {
             state: 'success',
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
-            response
+            ventID
         })
 
     },
@@ -195,28 +198,40 @@ const ventService = {
     },
 
     // delete Vent
-    async deleteVent(VentID){
+    async deleteVent(VentID,UserID){
         
+      const options = {
+        useFindAndModify: false,
+        new: true
+      }
       // holder to pack objects so they can be later destroyed
-      let commentIDList = null 
+      let rantIDList = null 
       // response holder
       let response = null
       
       // pack comments 
-      this._ventModel.findOne({_id: VentID}).
+      await ventService._ventModel.findOne({
+        _id: VentID,
+        create_by: UserID
+      }).
       then((data) => {
-        commentIDList = data.comments
+        rantIDList = data.rants
       })
 
 
       // delete model
-      this.
+      await ventService.
       _ventModel.
-      findOneAndRemove({_id: VentID}).
+      findOneAndRemove(
+        {
+          _id: VentID
+        },
+        options
+        ).
       then((result) => {
 
-        // Succeeded in saving new Vent to DB
-        winstonLogger.info(' -> Vent UPDATED')
+        //
+        winstonLogger.info(' -> Vent DELETED')
         winstonLogger.info(result)
         response = Promise.resolve(result)
 
@@ -227,9 +242,9 @@ const ventService = {
         winstonLogger.error(err)
 
         return Promise.resolve({
-          state: 'failure',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
         })
 
       })
@@ -241,23 +256,15 @@ const ventService = {
        */
       ventEvents.
         emit(
-            'delete-comments',
+            'on-delete',
             {
-              commentIDList
+              rantIDList
             }
-      )// send params
-      ventEvents.
-        emit(
-            'Vent-deleted',
-            {
-              VentID,
-              TopicID
-            }
-      )// send params
+      )
 
-        //return updated Text
+        //return 
         return Promise.resolve({
-            state: 'success',
+            state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
             response

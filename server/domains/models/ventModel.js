@@ -8,10 +8,17 @@
 
 import mongoose from '../../Infrastructure/plugins/mongooseCon'
 require('mongoose-type-url')
+import uniqueValidator from 'mongoose-unique-validator'
+
 
 const TSchema = mongoose.Schema
 
 const ventSchema = TSchema({
+    created_by: {
+        type: TSchema.Types.ObjectId,
+        ref: 'userModel',
+        required: true
+    },
     title: {
         type: String,
         require:true,
@@ -26,9 +33,14 @@ const ventSchema = TSchema({
         type: TSchema.Types.Url,
         required: false
     },
-    category:{
+    categoryID:{
         type: TSchema.Types.ObjectId,
         ref: 'categoryModel'
+    },
+    category: {
+        type: String,
+        require: false,
+        unique: false
     },
     views: {
         'default': 0,
@@ -68,6 +80,9 @@ const ventSchema = TSchema({
     timestamps: true,
     strict: true
 })
+
+//
+ventSchema.plugin(uniqueValidator)
 
 // Preparatory steps before save to model(pre-save)
 ventSchema.pre('save', function(next) {

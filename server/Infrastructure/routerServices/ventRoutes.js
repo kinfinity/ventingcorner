@@ -10,6 +10,7 @@ import winstonLogger from '../utils/winstonLogger'
 import publicEnums from '../../app/publicEnums'
 import jsStringCompression from 'js-string-compression'
 import ventService from '../../domains/services/ventService'
+import ventEvents from '../../interfaces/Events/ventEvents'
 
 /**
      * 
@@ -25,10 +26,11 @@ import ventService from '../../domains/services/ventService'
   const VentRouter = express.Router([routeUtils.routerOptions])
 
   //  
-  VentRouter.use('/VC/vent',routeUtils.asyncMiddleware(routeUtils.authUser))
+  VentRouter.use('/vent',routeUtils.asyncMiddleware(routeUtils.authUser))
+  // userID from token must match request userID for transaction to work
   
   // create Vent
-  VentRouter.route('/VC/vent')
+  VentRouter.route('/vent/create')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('Vent')
@@ -38,18 +40,45 @@ import ventService from '../../domains/services/ventService'
       try {
           
           const payload = await ventService.createVent(
-            req.body.Image,
-            req.body.Text
+            req.body.Title,
+            req.body.Text,
+            req.body.Category,
+            req.body.CategoryID
           )
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
+
+          //check if it worked
+          if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
+            // fire Event to bind/add vent to category CategoryID
+            winstonLogger.info('FIRING_EVENT: bind-to-category')
+            
+            ventEvents.
+            emit(
+                'bind-to-category',
+                {
+                  VentID: payload.ventID,
+                  CategoryID: req.body.CategoryID
+                }
+            )
+            
+            // fire Event to bind to user UserID
+            winstonLogger.info('FIRING_EVENT: bind-to-user')
+            
+            ventEvents.
+            emit(
+                'bind-to-user',
+                {
+                  VentID: payload.ventID,
+                  UserID: req.body.userID
+                }
+            )
+
           }
           
           // return VentID
+          payload.request_url = '/vent/create'
           res.json(payload)
 
       } catch (e) {
@@ -58,9 +87,11 @@ import ventService from '../../domains/services/ventService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            Data: null
+          request_url: '/vent/create',
+          state: publicEnums.VC_STATES.AUTHENTICATION_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+          token: null
         })
         
       }
@@ -70,7 +101,7 @@ import ventService from '../../domains/services/ventService'
   }))
 
   // delete Vent
-  VentRouter.route('/VC/vent')
+  VentRouter.route('/vent/delete')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('Vent-PROFILE')
@@ -80,15 +111,42 @@ import ventService from '../../domains/services/ventService'
       try {
           
           const payload = await ventService.deleteVent(
-            req.body.VentID
+            req.body.VentID,
+            req.body.UserID
           )
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
+
+          //check if it worked
+          if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
+            // fire Event to bind/add vent to category CategoryID
+            winstonLogger.info('FIRING_EVENT: remove-from-category')
+            
+            ventEvents.
+            emit(
+                'remove-from-category',
+                {
+                  VentID: payload.ventID,
+                  CategoryID: req.body.CategoryID
+                }
+            )
+            
+            // fire Event to bind to user UserID
+            winstonLogger.info('FIRING_EVENT: remove-from-user')
+            
+            ventEvents.
+            emit(
+                'remove-from-user',
+                {
+                  VentID: payload.ventID,
+                  UserID: req.body.userID
+                }
+            )
+
           }
+         
+          payload.request_url = '/vent/delete'
           res.json(payload)
 
       } catch (e) {
@@ -97,8 +155,10 @@ import ventService from '../../domains/services/ventService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
+            request_url: 'vent/delete',
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             Data: null
         })
 
@@ -109,7 +169,7 @@ import ventService from '../../domains/services/ventService'
   }))
 
     // get Vent description
-    VentRouter.route('/VC/vent')
+    VentRouter.route('/vent')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('Vent-PROFILE')
@@ -123,11 +183,8 @@ import ventService from '../../domains/services/ventService'
         )
 
         winstonLogger.info("PAYLOAD")
-        winstonLogger.info(JSON.stringify(payload,null,4))
-        payload.state = 'failure'
-        if(payload){
-            payload.state = 'success'
-        }
+        
+        payload.request_url = '/vent'
         res.json(payload)
 
     } catch (e) {
@@ -136,9 +193,11 @@ import ventService from '../../domains/services/ventService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            Data: null
+          request_url: 'vent',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+          Data: null
         })
 
     }
@@ -148,7 +207,7 @@ import ventService from '../../domains/services/ventService'
     }))
 
     // update Vent description
-    VentRouter.route('/VC/vent')
+    VentRouter.route('/vent/update')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('Vent-PROFILE')
@@ -177,27 +236,25 @@ import ventService from '../../domains/services/ventService'
 
         }
 
-        const payload = await ventService.updateVentDescription(
+        const payload = await ventService.updateVentText(
             req.body.VentID,
             req.body.Text
         )
 
         winstonLogger.info("PAYLOAD")
         winstonLogger.info(JSON.stringify(payload,null,4))
-        payload.state = 'failure'
-        if(payload){
-            payload.state = 'success'
-        }
+
         res.json(payload)
 
     } catch (e) {
 
-        winstonLogger.error('ERROR:getting Vent info')
+        winstonLogger.error('ERROR:getting Vent')
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             Data: null
         })
 
@@ -208,5 +265,7 @@ import ventService from '../../domains/services/ventService'
     }))
 
     
+
+    // add rants to vent
 
   module.exports = VentRouter

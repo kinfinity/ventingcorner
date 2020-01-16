@@ -7,9 +7,10 @@ import onRant from '../EventListeners/onRant'
 const ventEvents = new EventEmitter()
 
 //
-ventEvents.on('vent-ImagesUploaded',onImage.Vent.imageUpdate)
-ventEvents.on('vent-created',onVent.created)
-ventEvents.on('vent-deleted',onVent.deleted)
-ventEvents.on('delete-rants',onRant.deleteMultiple)
+ventEvents.on('bind-to-category',onVent.addToCategory)
+ventEvents.on('bind-to-user',onVent.addToUser)
+ventEvents.on('remove-from-category',onVent.removeFromCategory)
+ventEvents.on('remove-from-user',onVent.removeFromUser)
+ventEvents.on('on-delete',onVent.delete)
 
 export default ventEvents

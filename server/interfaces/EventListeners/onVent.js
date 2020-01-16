@@ -7,6 +7,8 @@
 
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 import categoryService from '../../domains/services/categoryService'
+import userService from '../../domains/services/userService'
+import rantService from '../../domains/services/rantService'
 
  const onVent =  {
 
@@ -18,7 +20,7 @@ import categoryService from '../../domains/services/categoryService'
      *          - CategoryID
      * 
      */
-    created: async(params) => { 
+    addToCategory: async(params) => { 
 
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
@@ -27,9 +29,7 @@ import categoryService from '../../domains/services/categoryService'
         addVent(params.VentID,params.CategoryID).
         then((res) => {
 
-
                 if(res !== null){
-
                     winstonLogger.info('UPDATE: Vent to Category document')
                     winstonLogger.info(JSON.stringify(res,null,4))
                     //validated
@@ -45,24 +45,45 @@ import categoryService from '../../domains/services/categoryService'
         })
 
     },
-    
-
-    deleted: async(params) => {
+    addToUser: async(params) => { 
 
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
         
-        categoryService.
-        removeVent(params.VentID,params.CategoryID).
+        userService.
+        addVent(params.VentID,params.UserID).
         then((res) => {
 
+                if(res !== null){
+                    winstonLogger.info('UPDATE: Vent to User document')
+                    winstonLogger.info(JSON.stringify(res,null,4))
+                    //validated
+                }
+                // if it didn't persist try again Or serialize if DB is down ... 
+                
+        }).
+        catch((e) =>{
+
+            winstonLogger.error('ERROR: appending Vent to User document')
+            winstonLogger.error(e)
+
+        })
+
+    },
+
+    //
+    removeFromCategory: async(params) => { 
+
+        winstonLogger.info('Event Launched')
+        winstonLogger.info(JSON.stringify(params,null,4))
+
+        categoryService.removeVent(params.VentID,params.CategoryID).
+        then((res) => {
 
                 if(res !== null){
-
-                    winstonLogger.info('REMOVE: Vent from Category document')
-                    winstonLogger.info(res)
+                    winstonLogger.info('UPDATE: Vent to Category document')
+                    winstonLogger.info(JSON.stringify(res,null,4))
                     //validated
-                    
                 }
                 // if it didn't persist try again Or serialize if DB is down ... 
                 
@@ -74,8 +95,72 @@ import categoryService from '../../domains/services/categoryService'
 
         })
 
-    }
+    },
+    removeFromUser: async(params) => { 
 
+        winstonLogger.info('Event Launched')
+        winstonLogger.info(JSON.stringify(params,null,4))
+        
+        userService.removeVent(params.VentID,params.UserID).
+        then((res) => {
+
+                if(res !== null){
+                    winstonLogger.info('UPDATE: Vent From User document')
+                    winstonLogger.info(JSON.stringify(res,null,4))
+                    //validated
+                }
+                // if it didn't persist try again Or serialize if DB is down ... 
+                
+        }).
+        catch((e) =>{
+
+            winstonLogger.error('ERROR: removing Vent From User document')
+            winstonLogger.error(e)
+
+        })
+
+    },
+
+    delete: async(params) => { 
+
+        const options  = {
+            useFindAndModify: false,
+            new: true
+          }
+
+        winstonLogger.info('Event Launched')
+        winstonLogger.info(JSON.stringify(params,null,4))
+        
+        let rant = null,ind = 0
+
+        for ( rant in params.rantIDList){
+            winstonLogger.info("current ID: "+ params.rantIDList[ind])
+            winstonLogger.info(params.rantIDList[ind])
+
+            await rantService._rantModel.findOneAndRemove(
+                {_id: params.rantIDList[ind]},
+                options
+            ).
+            then((res) => {
+
+                if(res !== null){
+                    winstonLogger.info('DELETE: rant')
+                    winstonLogger.info(JSON.stringify(res,null,4))
+                    //validated
+                }
+                // if it didn't persist try again Or serialize if DB is down ...   
+            }).
+            catch((e) =>{
+
+                winstonLogger.error('ERROR:deleting rant')
+                winstonLogger.error(e)
+
+            })
+            ind++
+        }
+        
+
+    }
 }
 
 export default onVent
