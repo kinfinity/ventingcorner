@@ -68,7 +68,7 @@ const ventService = {
     },
 
     // update Text
-    async updateText(Text , VentID){
+    async updateText(Text,VentID){
         
         //
         let response = null

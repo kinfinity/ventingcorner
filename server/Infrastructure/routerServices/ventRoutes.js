@@ -31,7 +31,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
   
   // create Vent
   VentRouter.route('/vent/create')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('Vent')
     winstonLogger.info('REQ:')
@@ -102,7 +102,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
 
   // delete Vent
   VentRouter.route('/vent/delete')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .delete(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('Vent-PROFILE')
     winstonLogger.info('REQ:')
@@ -208,7 +208,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
 
     // update Vent description
     VentRouter.route('/vent/update')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
+    .post(routeUtils.asyncMiddleware (async(req,res,next) => {
 
     winstonLogger.info('Vent-PROFILE')
     winstonLogger.info('REQ:')
@@ -236,14 +236,15 @@ import ventEvents from '../../interfaces/Events/ventEvents'
 
         }
 
-        const payload = await ventService.updateVentText(
-            req.body.VentID,
-            req.body.Text
+        const payload = await ventService.updateText(
+            req.body.Text,
+            req.body.VentID
         )
 
         winstonLogger.info("PAYLOAD")
         winstonLogger.info(JSON.stringify(payload,null,4))
 
+        payload.request_url = '/vent/update'
         res.json(payload)
 
     } catch (e) {
