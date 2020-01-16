@@ -199,23 +199,42 @@ const ventService = {
     },
 
     // delete Vent
-    async deleteVent(VentID,UserID){
+    async deleteVent(VentID,VentTitle,UserID){
         
       const options = {
         useFindAndModify: false,
         new: true
       }
-      // holder to pack objects so they can be later destroyed
-      let rantIDList = null 
-      // response holder
-      let response = null
-      
+      //
+      let rantIDList = null,response = null, factor = null
+      if(VentID && VentTitle){
+
+        factor = {
+          _id: VentID,
+          title: VentTitle,
+          created_by: UserID
+        }
+
+      }else if(VentID){
+
+        factor = {
+          _id: VentID,
+          created_by: UserID
+        }
+
+      }else if(VentTitle){
+
+        factor = {
+          title: Title,
+          created_by: UserID
+        }
+
+      }
       // pack comments 
-      await ventService._ventModel.findOne({
-        _id: VentID,
-        create_by: UserID
-      }).
+      await ventService._ventModel.findOne(factor,options).
       then((data) => {
+        winstonLogger.info('RANT LIST')
+        winstonLogger.info(data.rants)
         rantIDList = data.rants
       })
 
@@ -224,9 +243,7 @@ const ventService = {
       await ventService.
       _ventModel.
       findOneAndRemove(
-        {
-          _id: VentID
-        },
+        factor,
         options
         ).
       then((result) => {
