@@ -238,6 +238,7 @@ const ventService = {
           created_by: UserID
       }).
       then((data) => {
+        winstonLogger.info(data)
         winstonLogger.info('RANT LIST')
         winstonLogger.info(data.rants)
         rantIDList = data.rants
