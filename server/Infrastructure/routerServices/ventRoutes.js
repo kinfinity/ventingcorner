@@ -54,7 +54,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
             // fire Event to bind/add vent to category CategoryID
             winstonLogger.info('FIRING_EVENT: bind-to-category')
-            winstonLogger.info(payload.VentID)
+            winstonLogger.info(payload.ventID)
             winstonLogger.info(req.body.CategoryID)
             ventEvents.
             emit(
@@ -73,7 +73,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
                 'bind-to-user',
                 {
                   VentID: payload.ventID,
-                  UserID: req.body.userID
+                  UserID: req.body.UserID
                 }
             )
 

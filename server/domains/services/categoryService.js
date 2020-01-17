@@ -347,7 +347,10 @@ const categoryService = {
     
     // add Vent to Category
     async addVent(VentID,CategoryID){
-
+      const options = {
+        useFindAndModify: false,
+        new: true
+      }
         // 
         let response = null
 
@@ -356,7 +359,8 @@ const categoryService = {
             {_id: CategoryID},
             {
               $push: {vents: VentID}
-            }
+            },
+            options
         ).
         then((result) => {
 

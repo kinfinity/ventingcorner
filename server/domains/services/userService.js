@@ -983,7 +983,10 @@ const userService = {
 
   // add Vent to User
   async addVent(VentID,UserID){
-
+    const options = {
+      useFindAndModify: false,
+      new: true
+    }
     // 
     let response = null
 
@@ -992,7 +995,7 @@ const userService = {
         {_id: UserID},
         {
           $push: {vents: VentID}
-        }
+        },options
     ).
     then((result) => {
 
