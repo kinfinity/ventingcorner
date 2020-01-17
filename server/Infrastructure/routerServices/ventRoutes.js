@@ -256,9 +256,9 @@ import ventEvents from '../../interfaces/Events/ventEvents'
         winstonLogger.info(JSON.stringify(payload,null,4))
         if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
           delete payload['response']
-          payload.deleted = true
+          payload.updated = true
         }else{
-          payload.deleted = false
+          payload.updated = false
         }
         payload.request_url = '/vent/update'
         res.json(payload)
