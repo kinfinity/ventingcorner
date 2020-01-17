@@ -203,7 +203,8 @@ const ventService = {
       catch((err) => {
 
         winstonLogger.error(' -> Error: getting Vent')
-        winstonLogger.error(err)
+        winstonLogger.error(err.message)
+        winstonLogger.error(err.stack)
 
         return Promise.resolve({
           state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
