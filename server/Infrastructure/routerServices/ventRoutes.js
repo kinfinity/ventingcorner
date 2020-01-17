@@ -131,8 +131,8 @@ import ventEvents from '../../interfaces/Events/ventEvents'
             emit(
                 'remove-from-category',
                 {
-                  VentID: payload.ventID,
-                  CategoryID: req.body.CategoryID
+                  VentID: payload.Data._id,
+                  CategoryID: payload.Data.categoryID
                 }
             )
             
@@ -143,8 +143,8 @@ import ventEvents from '../../interfaces/Events/ventEvents'
             emit(
                 'remove-from-user',
                 {
-                  VentID: payload.ventID,
-                  UserID: req.body.userID
+                  VentID: payload.Data._id,
+                  UserID: req.body.UserID
                 }
             )
 

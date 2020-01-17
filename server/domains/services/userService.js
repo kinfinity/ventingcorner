@@ -1028,9 +1028,13 @@ const userService = {
 
 },
 
-// remove Vent from Category
-async removeVent(VentID,CategoryID){
+// remove Vent from User
+async removeVent(VentID,UserID){
 
+  const options = {
+    useFindAndModify: false,
+    new: true
+  }
     // 
     let response = null
 
@@ -1038,15 +1042,16 @@ async removeVent(VentID,CategoryID){
     findOneAndRemove(
         {_id: UserID},
         {
-          $pull: {posts: VentID}
-        }
+          $pull: {vents: VentID}
+        },
+        options
     ).
     then((result) => {
 
         // Removing Vent from Category in DB
         winstonLogger.info(' -> User UPDATED')
         winstonLogger.info(result)
-        response = Promise.resolve(result)
+        response = result
 
       }).
       catch((err) => {

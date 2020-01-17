@@ -396,6 +396,11 @@ const categoryService = {
     // remove Vent from Category
     async removeVent(VentID,CategoryID){
 
+      const options = {
+        useFindAndModify: false,
+        new: true
+      }
+
         // 
         let response = null
 
@@ -404,14 +409,15 @@ const categoryService = {
             {_id: CategoryID},
             {
               $pull: {vents: VentID}
-            }
+            },
+            options
         ).
         then((result) => {
 
             // Removing Vent from Category in DB
             winstonLogger.info(' -> Category UPDATED')
             winstonLogger.info(result)
-            response = Promise.resolve(result)
+            response = result
     
           }).
           catch((err) => {
