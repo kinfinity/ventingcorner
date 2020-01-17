@@ -28,7 +28,7 @@ const hm = new jsStringCompression.Hauffman()
 
   // free access endpoints for authentication
   const openAccessRouterService = express.Router([routeUtils.routerOptions])
-  openAccessRouterService.use(routeUtils.csrfMiddleware)
+  // openAccessRouterService.use(routeUtils.csrfMiddleware)
 
   // OpenAccess_routes : don't require accessToken
   openAccessRouterService.route('/signup').post(routeUtils.asyncMiddleware(async (req,res,next) => {

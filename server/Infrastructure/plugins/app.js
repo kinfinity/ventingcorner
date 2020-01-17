@@ -44,7 +44,7 @@ app.
     use(cors(corsOptions)).
     use(bodyParser.json()).
     use(bodyParser.urlencoded({
-        extended: true//true
+        extended: true//
     }))
 
 
