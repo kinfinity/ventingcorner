@@ -22,7 +22,7 @@ const ventSchema = TSchema({
     title: {
         type: String,
         require:true,
-        unique: false
+        unique: true
     },
     text:{
         type: String,

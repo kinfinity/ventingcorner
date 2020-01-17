@@ -189,11 +189,12 @@ import ventEvents from '../../interfaces/Events/ventEvents'
     try {
         
         const payload = await ventService.getVent(
-            req.body.VentID
+            req.body.VentID,
+            req.body.VentTitle
         )
 
         winstonLogger.info("PAYLOAD")
-        
+        winstonLogger.info(payload)
         payload.request_url = '/vent'
         res.json(payload)
 
@@ -203,7 +204,7 @@ import ventEvents from '../../interfaces/Events/ventEvents'
         winstonLogger.error(e.stack)
 
         res.json({
-          request_url: 'vent',
+          request_url: '/vent',
           state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
           statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,

@@ -166,6 +166,8 @@ const ventService = {
         new: true
       }
 
+      winstonLogger.info("here")
+      winstonLogger.info(VentID,VentTitle)
         //
         let response = null, factor = null
         if(VentID && VentTitle){
@@ -184,7 +186,7 @@ const ventService = {
         }else if(VentTitle){
   
           factor = {
-            title: Title
+            title: VentTitle
           }
   
         }
@@ -195,26 +197,26 @@ const ventService = {
         // Succeeded in saving new Vent to DB
         winstonLogger.info(' -> get Vent')
         winstonLogger.info(result)
-        response = Promise.resolve(result)
+        response = result
 
       }).
       catch((err) => {
 
-        winstonLogger.error(' -> Vent NOT UPDATED')
+        winstonLogger.error(' -> Error: getting Vent')
         winstonLogger.error(err)
 
         return Promise.resolve({
-          state: 'failure',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR,
-          Token: null
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+          Data: null
         })
 
       })
 
         //return updated Text
         return Promise.resolve({
-            state: 'success',
+            state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
             response
