@@ -113,7 +113,6 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           
           const payload = await ventService.deleteVent(
             req.body.VentID,
-            req.body.VentTitle,
             req.body.UserID
           )
 
