@@ -275,9 +275,11 @@ const ventService = {
       then((result) => {
 
         //
-        winstonLogger.info(' -> Vent DELETED')
-        winstonLogger.info(result)
-        response = result
+        if(result){
+          winstonLogger.info(' -> Vent DELETED')
+          winstonLogger.info(result)
+          response = Promise.resolve(result)
+        }
 
       }).
       catch((err) => {
