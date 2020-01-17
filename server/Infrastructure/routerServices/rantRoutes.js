@@ -15,50 +15,11 @@ import rantService from '../../domains/services/rantService'
   //  Router for rant calls 
   const rantRouter = express.Router([routeUtils.routerOptions])
 
-  //  
-  // rantRouter.use('/rant',routeUtils.asyncMiddleware(routeUtils.authrant))
+  //
+  rantRouter.use('/rant',routeUtils.asyncMiddleware(routeUtils.authUser))
   
-  // create Text rant
-  rantRouter.route('/rant/create')
-    .get(routeUtils.asyncMiddleware (async(req,res,next) => {
-    
-    winstonLogger.info('rant-PROFILE')
-    winstonLogger.info('REQ:')
-    winstonLogger.info(JSON.stringify(req.body,null,4))
-    
-      try {
-          
-          const payload = await rantService.createTextrant(
-            req.body.Text
-          )
-
-          winstonLogger.info("PAYLOAD")
-          winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
-          }
-          res.json(payload)
-
-      } catch (e) {
-
-        winstonLogger.error('ERROR: creating rant')
-        winstonLogger.error(e.stack)
-
-        res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            Data: null
-        })
-
-      }
-
-    next()
-
-  }))
-
-    // create Image rant
-    rantRouter.route('/rant/createImage')
+    // create rant
+    rantRouter.route('/rant/create')
     .get(routeUtils.asyncMiddleware (async(req,res,next) => {
     
     winstonLogger.info('rant')
@@ -91,15 +52,16 @@ import rantService from '../../domains/services/rantService'
         }
 
           const payload = await rantService.createTextrant(
-            ImageUrl
+            req.body.Text,
+            req.body.UserID
           )
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
-          }
+          payload.request_url = '/rant/create'
+
+          // Fire Event -> push rantID to Vent Document
+
           res.json(payload)
 
     } catch (e) {
@@ -108,9 +70,9 @@ import rantService from '../../domains/services/rantService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
-            statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            Data: null
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessages: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
         })
 
     }

@@ -5,13 +5,17 @@
  * rantModel: () : rantSchema : () : mongooseSchema
  * 
  */
-import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 import mongoose from '../../Infrastructure/plugins/mongooseCon'
 require('mongoose-type-url')
 
 const TSchema = mongoose.Schema
 
 const rantSchema = TSchema({
+    created_by: {
+        type: TSchema.Types.ObjectId,
+        ref: 'userModel',
+        required: true
+    },
     text:{
         type: String,
         require: false,

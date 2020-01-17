@@ -67,10 +67,9 @@ app.use(function (err, req, res, next) {
         // handle CSRF token error
         winstonLogger.error('CSRF TOKEN TAMPERED WITH')
         res.json({
-            state: 'FAILURE',
+            state: publicEnums.VC_STATES.CSRF_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_ERROR,
-            statusMessage: publicEnums.VC_STATUS_MESSAGES.CSRF_ERROR,
-            Token: null
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.CSRF_ERROR
         })
 
     }else if(err.code == 'ERR_ASSERTION'){
@@ -122,8 +121,11 @@ app.get("/csrfTOKEN", routeUtils.csrfMiddleware,function(req, res) {
 })
 
 app.get("/viewHEADERS",function(req, res) {// For Debugging
-      winstonLogger.info("REQUEST_HEADERS:" +req.headers)
-      res.json({ headers: req.headers})
+      winstonLogger.info("REQUEST_HEADERS:" +JSON.stringify(req.headers,null,4))
+      res.json({ 
+            headers: req.headers,
+            body: req.body
+        })
 })
 
 // 
