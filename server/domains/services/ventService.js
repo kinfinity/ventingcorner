@@ -243,8 +243,8 @@ const ventService = {
       then((data) => {
 
         winstonLogger.info("Data: "+data)
-        if(data){
-          winstonLogger.info('RANT LIST')
+        if(data.rants){
+          winstonLogger.info('RANT LIST:')
           winstonLogger.info(data.rants)
           rantIDList = data.rants
         }
@@ -277,19 +277,16 @@ const ventService = {
       then((result) => {
 
         //
-
-        winstonLogger.info('deleting')
-        winstonLogger.info(result)
         if(result){
           winstonLogger.info(' -> Vent DELETED')
           winstonLogger.info(result)
-          response = Promise.resolve(result)
+          response = result
         }else{
           return Promise.resolve({
             state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
-            Data: Promise.resolve(result)
+            Data: result
           })
         }
 
