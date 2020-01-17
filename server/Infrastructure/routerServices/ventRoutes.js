@@ -151,6 +151,12 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           }
          
           payload.request_url = '/vent/delete'
+          if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
+            delete payload['Data']
+            payload.deleted = true
+          }else{
+            payload.deleted = false
+          }
           res.json(payload)
 
       } catch (e) {
