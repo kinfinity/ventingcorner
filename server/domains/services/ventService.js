@@ -278,7 +278,7 @@ const ventService = {
         if(result){
           winstonLogger.info(' -> Vent DELETED')
           winstonLogger.info(result)
-          response = Promise.resolve(result)
+          response = result
         }
 
       }).
@@ -315,7 +315,7 @@ const ventService = {
             state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
-            response
+            Data: response
         })
 
     },

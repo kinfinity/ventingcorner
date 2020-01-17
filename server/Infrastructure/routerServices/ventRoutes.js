@@ -118,6 +118,8 @@ import ventEvents from '../../interfaces/Events/ventEvents'
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
+          winstonLogger.info('here')
+          winstonLogger.info(Promise.resolve(payload.Data))
 
           //check if it worked
           if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
