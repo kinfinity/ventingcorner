@@ -277,10 +277,20 @@ const ventService = {
       then((result) => {
 
         //
+
+        winstonLogger.info('deleting')
+        winstonLogger.info(result)
         if(result){
           winstonLogger.info(' -> Vent DELETED')
           winstonLogger.info(result)
           response = result
+        }else{
+          return Promise.resolve({
+            state: publicEnums.VC_STATES.REQUEST_OK,
+            statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
+            Data: response
+          })
         }
 
       }).
@@ -303,6 +313,7 @@ const ventService = {
        *      - UNLINK FROM TOPIC
        */
       if(!rantIDList == null){
+        winstonLogger.info('RantList exists -> Fire: on delete')
         ventEvents.
         emit(
             'on-delete',
