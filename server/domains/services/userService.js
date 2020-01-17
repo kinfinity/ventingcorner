@@ -1039,7 +1039,7 @@ async removeVent(VentID,UserID){
     let response = null
 
     await userService._userModel.
-    findOneAndRemove(
+    findOneAndUpdate(
         {_id: UserID},
         {
           $pull: {vents: VentID}

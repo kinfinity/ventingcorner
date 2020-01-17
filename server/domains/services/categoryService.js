@@ -406,7 +406,7 @@ const categoryService = {
         winstonLogger.info("check")
         winstonLogger.info(options)
         await categoryService._categoryModel.
-        findOneAndRemove(
+        findOneAndUpdate(
             {_id: CategoryID},
             {
               $pull: {vents: VentID}
