@@ -403,7 +403,8 @@ const categoryService = {
 
         // 
         let response = null
-
+        winstonLogger.info("check")
+        winstonLogger.info(options)
         await categoryService._categoryModel.
         findOneAndRemove(
             {_id: CategoryID},
