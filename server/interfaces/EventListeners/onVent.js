@@ -123,7 +123,7 @@ import rantService from '../../domains/services/rantService'
 
     delete: async(params) => { 
 
-        const options  = {
+        const options = {
             useFindAndModify: false,
             new: true
           }

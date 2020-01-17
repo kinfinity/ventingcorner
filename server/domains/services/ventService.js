@@ -250,7 +250,7 @@ const ventService = {
       }).
       catch((err) => {
 
-        winstonLogger.error(' -> Vent NOT UPDATED')
+        winstonLogger.error(' -> ERROR: getting Rant List')
         winstonLogger.error(err)
 
         return Promise.resolve({
@@ -277,7 +277,7 @@ const ventService = {
         //
         winstonLogger.info(' -> Vent DELETED')
         winstonLogger.info(result)
-        response = Promise.resolve(result)
+        response = result
 
       }).
       catch((err) => {
@@ -298,7 +298,7 @@ const ventService = {
        *      - DELETE COMMENTS
        *      - UNLINK FROM TOPIC
        */
-      if(rantIDList){
+      if(!rantIDList == null){
         ventEvents.
         emit(
             'on-delete',
