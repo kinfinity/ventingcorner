@@ -81,7 +81,7 @@ import rantService from '../../domains/services/rantService'
         then((res) => {
 
                 if(res !== null){
-                    winstonLogger.info('UPDATE: Vent to Category document')
+                    winstonLogger.info('UPDATE: Vent From Category document')
                     winstonLogger.info(JSON.stringify(res,null,4))
                     //validated
                 }
@@ -91,7 +91,8 @@ import rantService from '../../domains/services/rantService'
         catch((e) =>{
 
             winstonLogger.error('ERROR: removing Vent from Category document')
-            winstonLogger.error(e)
+            winstonLogger.error(e.message)
+            winstonLogger.error(e.stack)
 
         })
 
@@ -115,7 +116,8 @@ import rantService from '../../domains/services/rantService'
         catch((e) =>{
 
             winstonLogger.error('ERROR: removing Vent From User document')
-            winstonLogger.error(e)
+            winstonLogger.error(e.message)
+            winstonLogger.error(e.stack)
 
         })
 
