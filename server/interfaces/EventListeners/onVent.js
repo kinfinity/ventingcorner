@@ -25,7 +25,7 @@ import rantService from '../../domains/services/rantService'
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
 
-        categoryService.
+        await categoryService.
         addVent(params.VentID,params.CategoryID).
         then((res) => {
 
@@ -50,7 +50,7 @@ import rantService from '../../domains/services/rantService'
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
         
-        userService.
+        await userService.
         addVent(params.VentID,params.UserID).
         then((res) => {
 
@@ -77,7 +77,7 @@ import rantService from '../../domains/services/rantService'
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
 
-        categoryService.removeVent(params.VentID,params.CategoryID).
+        await categoryService.removeVent(params.VentID,params.CategoryID).
         then((res) => {
 
                 if(res !== null){
@@ -101,7 +101,7 @@ import rantService from '../../domains/services/rantService'
         winstonLogger.info('Event Launched')
         winstonLogger.info(JSON.stringify(params,null,4))
         
-        userService.removeVent(params.VentID,params.UserID).
+        await userService.removeVent(params.VentID,params.UserID).
         then((res) => {
 
                 if(res !== null){

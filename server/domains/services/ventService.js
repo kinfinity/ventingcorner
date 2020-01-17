@@ -283,13 +283,13 @@ const ventService = {
         if(result){
           winstonLogger.info(' -> Vent DELETED')
           winstonLogger.info(result)
-          response = result
+          response = Promise.resolve(result)
         }else{
           return Promise.resolve({
             state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.NOT_FOUND,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.INCORRECT_PARAMS,
-            Data: response
+            Data: Promise.resolve(result)
           })
         }
 
