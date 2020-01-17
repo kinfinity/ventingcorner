@@ -160,14 +160,6 @@ const ventService = {
 
     // get Vent 
     async getVent(VentID,VentTitle){
-
-      const options = {
-        useFindAndModify: false,
-        new: true
-      }
-
-      winstonLogger.info("here")
-      winstonLogger.info(VentID,VentTitle)
         //
         let response = null, factor = null
         if(VentID && VentTitle){
@@ -191,7 +183,7 @@ const ventService = {
   
         }
         await ventService._ventModel.
-        findOne(factor,options).
+        findOne(factor).
       then((result) => {
 
         // Succeeded in saving new Vent to DB
