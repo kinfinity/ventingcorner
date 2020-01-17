@@ -229,6 +229,7 @@ const ventService = {
         useFindAndModify: false,
         new: true
       }
+      winstonLogger.info("VentID: "+VentID+" UserID: "+ UserID)
       //
       let rantIDList = null,response = null
       // pack comments 
@@ -238,10 +239,26 @@ const ventService = {
           created_by: UserID
       }).
       then((data) => {
-        winstonLogger.info(data)
-        winstonLogger.info('RANT LIST')
-        winstonLogger.info(data.rants)
-        rantIDList = data.rants
+
+        winstonLogger.info("Data: "+data)
+        if(data){
+          winstonLogger.info('RANT LIST')
+          winstonLogger.info(data.rants)
+          rantIDList = data.rants
+        }
+
+      }).
+      catch((err) => {
+
+        winstonLogger.error(' -> Vent NOT UPDATED')
+        winstonLogger.error(err)
+
+        return Promise.resolve({
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+          statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
+        })
+
       })
 
 
@@ -265,7 +282,7 @@ const ventService = {
       }).
       catch((err) => {
 
-        winstonLogger.error(' -> Vent NOT UPDATED')
+        winstonLogger.error(' -> Vent NOT DELETED')
         winstonLogger.error(err)
 
         return Promise.resolve({
@@ -281,13 +298,15 @@ const ventService = {
        *      - DELETE COMMENTS
        *      - UNLINK FROM TOPIC
        */
-      ventEvents.
+      if(rantIDList){
+        ventEvents.
         emit(
             'on-delete',
             {
               rantIDList
             }
-      )
+        )
+      }
 
         //return 
         return Promise.resolve({
