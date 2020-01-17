@@ -38,11 +38,13 @@ const ventService = {
       save().
       then((result) => {
 
-        // Succeeded in saving new Vent to DB
-        winstonLogger.info(' -> Vent CREATED')
-        winstonLogger.info(result)
-        ventID = result._id
-
+        if(result){
+          // Succeeded in saving new Vent to DB
+          winstonLogger.info(' -> Vent CREATED')
+          winstonLogger.info(result)
+          ventID = result._id
+        }
+        
       }).
       catch((err) => {
 
@@ -50,17 +52,17 @@ const ventService = {
         winstonLogger.error(err)
 
         return Promise.resolve({
-          state: 'failure',
+          state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
           statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-          statusMessage: publicEnums.VC_STATUS_MESSAGES.HASHING_ERROR,
-          Token: null
+          statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+          VentID: null
         })
 
       })
 
         //return VentID
         return Promise.resolve({
-            state: 'success',
+            state: publicEnums.VC_STATES.REQUEST_OK,
             statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
             statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
             ventID
