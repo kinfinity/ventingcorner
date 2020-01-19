@@ -25,14 +25,6 @@ const corsOptions = {
 }
 
 const helmetOptions = {}
-app.use(helmet());
-app.use(helmet.xssFilter({ setOnOldIE: true }));
-app.use(helmet.frameguard('deny'));
-app.use(helmet.hsts({maxAge: 7776000000, includeSubdomains: true}));
-app.use(helmet.hidePoweredBy());
-app.use(helmet.ieNoOpen());
-app.use(helmet.noSniff());
-app.use(helmet.noCache());
 
 
 // main Express application/router 
@@ -46,6 +38,15 @@ app.
     use(bodyParser.urlencoded({
         extended: true//
     }))
+
+    app.use(helmet());
+    app.use(helmet.xssFilter({ setOnOldIE: true }));
+    app.use(helmet.frameguard('deny'));
+    app.use(helmet.hsts({maxAge: 7776000000, includeSubdomains: true}));
+    app.use(helmet.hidePoweredBy());
+    app.use(helmet.ieNoOpen());
+    app.use(helmet.noSniff());
+    app.use(helmet.noCache());
 
 
   
