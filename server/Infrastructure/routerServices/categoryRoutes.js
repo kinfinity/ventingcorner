@@ -30,7 +30,7 @@ import categoryService from '../../domains/services/categoryService'
   const categoryRouter = express.Router([routeUtils.routerOptions])
     
   //
-//   categoryRouter.use(routeUtils.csrfMiddleware)  
+  // categoryRouter.use(routeUtils.csrfMiddleware)  
 
   // create category  | ~* add admin protect
   categoryRouter.route('/category/create')

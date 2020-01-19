@@ -25,14 +25,14 @@ const corsOptions = {
 }
 
 const helmetOptions = {}
-// app.use(helmet());
-// app.use(helmet.xssFilter({ setOnOldIE: true }));
-// app.use(helmet.frameguard('deny'));
-// app.use(helmet.hsts({maxAge: 7776000000, includeSubdomains: true}));
-// app.use(helmet.hidePoweredBy());
-// app.use(helmet.ieNoOpen());
-// app.use(helmet.noSniff());
-// app.use(helmet.noCache());
+app.use(helmet());
+app.use(helmet.xssFilter({ setOnOldIE: true }));
+app.use(helmet.frameguard('deny'));
+app.use(helmet.hsts({maxAge: 7776000000, includeSubdomains: true}));
+app.use(helmet.hidePoweredBy());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.noCache());
 
 
 // main Express application/router 
@@ -113,12 +113,12 @@ const wrapper = {
 }
 
 // CSRFTOKEN GENERATION ENDPOINT
-// app.get("/csrfTOKEN", routeUtils.csrfMiddleware,function(req, res) {
-//     //    send the token to client
-//       let _token = req.csrfToken()
-//       winstonLogger.info(`GENERATED_CSRF: ${_token}`)
-//       res.json({ csrfToken: _token})
-// })
+app.get("/csrfTOKEN", routeUtils.csrfMiddleware,function(req, res) {
+    //    send the token to client
+      let _token = req.csrfToken()
+      winstonLogger.info(`GENERATED_CSRF: ${_token}`)
+      res.json({ csrfToken: _token})
+})
 
 app.get("/viewHEADERS",function(req, res) {// For Debugging
       winstonLogger.info("REQUEST_HEADERS:" +JSON.stringify(req.headers,null,4))

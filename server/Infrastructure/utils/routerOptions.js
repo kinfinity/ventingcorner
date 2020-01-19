@@ -80,13 +80,13 @@ const authUser = async (req, res, next) => {
   }
 }
 
-// const csrfMiddleware = csurf({
-//   cookie: true
-// })
+const csrfMiddleware = csurf({
+  cookie: true
+})
 
 export default {
   routerOptions,
   authUser,
-  asyncMiddleware
-  // csrfMiddleware
+  asyncMiddleware,
+  csrfMiddleware
 }
