@@ -119,10 +119,6 @@ import userService from '../../domains/services/userService'
             
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(JSON.stringify(payload,null,4))
-          payload.state = 'failure'
-          if(payload){
-            payload.state = 'success'
-          }
           res.json(payload)
 
       } catch (e) {
@@ -131,8 +127,9 @@ import userService from '../../domains/services/userService'
         winstonLogger.error(e.stack)
 
         res.json({
-            state: 'failure',
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
             Data: null
         })
 
@@ -185,35 +182,32 @@ import userService from '../../domains/services/userService'
   }))
 
   // get posts
-  userRouter.route('/user/posts')
+  userRouter.route('/user/vents')
   .get(routeUtils.asyncMiddleware (async(req,res) => {
     
-    winstonLogger.info('user-ACTIVITIES')
+    winstonLogger.info('user-VENTS')
     winstonLogger.info('REQUEST BODY')
     winstonLogger.info(JSON.stringify(req.body,null,4))
     
       try {
           // *
-          const payload = await userService.getPosts(
-            req.body.UserName,
+          const payload = await userService.getVentIDs(
             req.body.UserID
           )
 
           winstonLogger.info("PAYLOAD")
           winstonLogger.info(payload)
-
-          payload.state = 'success'
           res.json(payload)   
 
       } catch (e) {
 
-        winstonLogger.error('ERROR: getting activities')
+        winstonLogger.error('ERROR: getting vents')
         winstonLogger.error(e)
 
         res.json({
-            state: 'failure',
+            state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
             statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
-            Token: null
+            statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR
         })
 
       }

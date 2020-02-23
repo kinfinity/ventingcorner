@@ -590,7 +590,7 @@ const userService = {
         winstonLogger.error(err.message)
 
       return Promise.resolve({
-        state: 'failure',
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
         statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
         statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
         Data: null
@@ -599,7 +599,7 @@ const userService = {
     })
 
     return Promise.resolve({
-      state: 'success',
+      state: publicEnums.REQUEST_OK,
       statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
       statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
       Data: response
@@ -1075,7 +1075,51 @@ async removeVent(VentID,UserID){
             response
         })
 
-}
+},
+/*
+   * get VentIDs
+   */
+  async getVentIDs(UserID) {
+
+    //
+    let response = null
+    // 
+    await userService.
+    _userModel.
+    findOne({
+      _id: UserID
+    })
+    .then((userData) => {
+
+      if(userData){
+          winstonLogger.info('Vents: ')
+          winstonLogger.info(userData.vents)
+          response = userData.vents
+      }
+
+    })
+    .catch((err) => {
+
+        winstonLogger.error('ERROR getting Vents')
+        winstonLogger.error(err.message)
+
+      return Promise.resolve({
+        state: publicEnums.VC_STATES.INTERNAL_SERVER_ERROR,
+        statusCode: publicEnums.VC_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        statusMessage: publicEnums.VC_STATUS_MESSAGES.INTERNAL_SERVER_ERROR,
+        Data: null
+      })
+
+    })
+
+    return Promise.resolve({
+      state: publicEnums.VC_STATES.REQUEST_OK,
+      statusCode: publicEnums.VC_STATUS_CODES.REQUEST_OK,
+      statusMessage: publicEnums.VC_STATUS_MESSAGES.REQUEST_OK,
+      ventIDs: response
+    })
+
+  }
 
 }
 

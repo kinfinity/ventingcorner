@@ -304,7 +304,7 @@ const categoryService = {
       response.pop()
       //-
       await categoryService._categoryModel.
-      find().
+      find({}).
       then((result) => {
 
           // Succeeded in saving new comment to DB
@@ -316,7 +316,7 @@ const categoryService = {
               t = result[ind].title
               i = result[ind]._id
               winstonLogger.info("title: "+t+" id: "+i)
-              response.push({title,id})
+              response.push({title: t,id:i})
               ind++
             }
           } 
