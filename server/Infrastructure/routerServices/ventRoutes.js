@@ -42,8 +42,8 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           const payload = await ventService.createVent(
             req.body.Title,
             req.body.Text,
-            req.body.Category,
-            req.body.CategoryID,
+            //req.body.Category,
+            //req.body.CategoryID,
             req.body.UserID
           )
 
@@ -53,17 +53,17 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           //check if it worked
           if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
             // fire Event to bind/add vent to category CategoryID
-            winstonLogger.info('FIRING_EVENT: bind-to-category')
-            winstonLogger.info(payload.ventID)
-            winstonLogger.info(req.body.CategoryID)
-            ventEvents.
-            emit(
-                'bind-to-category',
-                {
-                  VentID: payload.ventID,
-                  CategoryID: req.body.CategoryID
-                }
-            )
+            // winstonLogger.info('FIRING_EVENT: bind-to-category')
+            // winstonLogger.info(payload.ventID)
+            // winstonLogger.info(req.body.CategoryID)
+            // ventEvents.
+            // emit(
+            //     'bind-to-category',
+            //     {
+            //       VentID: payload.ventID,
+            //       CategoryID: req.body.CategoryID
+            //     }
+            // )
             
             // fire Event to bind to user UserID
             winstonLogger.info('FIRING_EVENT: bind-to-user')
@@ -125,16 +125,16 @@ import ventEvents from '../../interfaces/Events/ventEvents'
           //check if it worked
           if(payload.state == publicEnums.VC_STATES.REQUEST_OK){
             // fire Event to bind/add vent to category CategoryID
-            winstonLogger.info('FIRING_EVENT: remove-from-category')
+            // winstonLogger.info('FIRING_EVENT: remove-from-category')
             
-            ventEvents.
-            emit(
-                'remove-from-category',
-                {
-                  VentID: payload.Data._id,
-                  CategoryID: payload.Data.categoryID
-                }
-            )
+            // ventEvents.
+            // emit(
+            //     'remove-from-category',
+            //     {
+            //       VentID: payload.Data._id,
+            //       CategoryID: payload.Data.categoryID
+            //     }
+            // )
             
             // fire Event to bind to user UserID
             winstonLogger.info('FIRING_EVENT: remove-from-user')

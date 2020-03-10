@@ -1,5 +1,5 @@
 /*
- * #k_infinityIII
+ * #k_infinityIII@
  *
  * GetAccesToken: () :
  *
@@ -10,10 +10,10 @@ import winstonLogger from '../../Infrastructure/utils/winstonLogger'
 
 export default class {
 
-  constructor(accessTokenManager) {
+  constructor(TokenManager) {
 
-    this.accessTokenManager = accessTokenManager
-    winstonLogger.info('Access TokenManager set')
+    this.TokenManager = TokenManager
+    winstonLogger.info('Refresh TokenManager set')
 
     }
 
@@ -29,7 +29,7 @@ export default class {
         audience: 'serps'
         }
         
-      return this.accessTokenManager.generate(payload, options)
+      return this.TokenManager.generate(payload, options)
 
   }
 

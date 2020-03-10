@@ -1,5 +1,5 @@
 /*
- * #k_infinityIII@Echwood
+ * #k_infinityIII
  *
  * JwtAccesTokenManager: (implementation)
  *
@@ -50,13 +50,14 @@ export default class {
 
   }
 
-  static verify(accessToken, options) {
+  static verify(Token, options) {
 
     let res = null
       //equally decodes the token
+      
       try{
 
-        res = jwt.verify(accessToken, publicKey, options)
+        res = jwt.verify(Token, publicKey, options)
         winstonLogger.info(JSON.stringify(res,null,4))
 
       }catch(e){
@@ -69,9 +70,9 @@ export default class {
 
   }
   
-  static destroy(accessToken) {
+  static destroy(Token) {
 
-    return jwt.destroy()
+    return jwt.destroy(Token)
 
   }
 

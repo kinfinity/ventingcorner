@@ -2,7 +2,6 @@
  * #k_infinityIII@
  *
  * VerifyAccesToken: () :
- *      Promises Bluebird
  *
  */
 import winstonLogger from '../../Infrastructure/utils/winstonLogger'
@@ -10,13 +9,13 @@ import config from '../../Infrastructure/utils/config'
 
 export default class {
 
-  constructor(accessTokenManager) {
+  constructor(TokenManager) {
 
-        this.accessTokenManager = accessTokenManager
+        this.TokenManager = TokenManager
 
     }
 
-    execute(accessToken) {
+    execute(Token) {
 
       winstonLogger.info('Verifying Token')
       
@@ -28,7 +27,7 @@ export default class {
         audience: 'serps'
         }
 
-    return  this.accessTokenManager.verify(accessToken,options)
+    return  this.TokenManager.verify(Token,options)
 
   }
 
